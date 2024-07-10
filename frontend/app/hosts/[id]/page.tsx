@@ -1,4 +1,5 @@
 import Image from "next/image";
+
 import ContactButton from "@/app/components/ContactButton";
 import PropertyList from "@/app/components/properties/PropertyList";
 
