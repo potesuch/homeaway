@@ -6,6 +6,18 @@ from django.db import models
 User = get_user_model()
 
 
+class Category(models.Model):
+    """
+    Модель категории, представляющая категорию объектов недвижимости.
+
+    Attributes:
+        id (UUIDField): Уникальный идентификатор категории.
+        name (CharField): Название категории.
+    """
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4)
+    name = models.CharField(max_length=20)
+
+
 class Property(models.Model):
     """
     Модель недвижимости, представляющая собой объект для аренды.
@@ -19,7 +31,7 @@ class Property(models.Model):
         bathrooms (IntegerField): Количество ванных комнат.
         country (CharField): Страна расположения объекта.
         country_code (CharField): Код страны.
-        category (CharField): Категория объекта (например, квартира, дом и т.д.).
+        category (ForeignKey): Категория объекта недвижимости
         image (ImageField): Изображение объекта недвижимости.
         host (ForeignKey): Владелец (хост) объекта, связанный с моделью пользователя.
         created_at (DateTimeField): Дата и время создания записи.
@@ -33,7 +45,12 @@ class Property(models.Model):
     bathrooms = models.IntegerField()
     country = models.CharField(max_length=255)
     country_code = models.CharField(max_length=10)
-    category = models.CharField(max_length=255)
+    category = models.ForeignKey(
+        Category,
+        related_name='properties',
+        null=True,
+        on_delete=models.SET_NULL
+    )
     image = models.ImageField(upload_to='uploads/properties')
     host = models.ForeignKey(
         User, related_name='properties', on_delete=models.CASCADE
