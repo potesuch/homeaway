@@ -5,6 +5,9 @@ from .models import Property, Category
 
 @admin.register(Property)
 class PropertyAdmin(admin.ModelAdmin):
+    """
+    Административная панель для управления объектами недвижимости.
+    """
     list_display = (
         'id',
         'title',
@@ -22,6 +25,9 @@ class PropertyAdmin(admin.ModelAdmin):
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
+    """
+    Административная панель для управления категориями. 
+    """
     list_display = ('id', 'name')
     list_display_links = ('id', 'name')
     search_fields = ('id', 'name')
