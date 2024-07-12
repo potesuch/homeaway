@@ -8,3 +8,10 @@ class ShortPropertySerializer(serializers.ModelSerializer):
     class Meta:
         model = Property
         fields = ('id', 'title', 'price_per_night', 'image')
+
+
+class PropertySerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Property
+        fields = ('id', 'title', 'description', )
