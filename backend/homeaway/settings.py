@@ -156,6 +156,9 @@ REST_FRAMEWORK = {
     ]
 }
 
+DJOSER = {
+    'USER_CREATE_PASSWORD_RETYPE': True,
+}
 
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),
