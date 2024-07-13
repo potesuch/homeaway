@@ -33,7 +33,7 @@ const apiService = {
                 },
                 body: data
             })
-                .then(response => response.json)
+                .then(response => response.json())
                 .then((json) => {
                     console.log('Response:', json);
 
