@@ -15,6 +15,9 @@ const SignupModal = () => {
     const [password1, setPassword1] = useState('');
     const [password2, setPassword2] = useState('');
     const [errors, setErrors] = useState<string[]>([]);
+    const [emailBorder, setEmailBorder] = useState('border-gray-300');
+    const [password1Border, setPassword1Border] = useState('border-gray-300');
+    const [password2Border, setPassword2Border] = useState('border-gray-300');
 
     const submitSignup = async () => {
         const formData = {
@@ -34,6 +37,18 @@ const SignupModal = () => {
             });
 
             setErrors(tmpErrors);
+            setEmailBorder('border-gray-300');
+            setPassword1Border('border-gray-300');
+            setPassword2Border('border-gray-300');
+            if (response.email) {
+                setEmailBorder('border-helio-dark');
+            }
+            if (response.password) {
+                setPassword1Border('border-helio-dark');
+            }
+            if (response.re_password) {
+                setPassword2Border('border-helio-dark');
+            }
         }
     }
 
@@ -43,10 +58,10 @@ const SignupModal = () => {
                 action={submitSignup}
                 className="space-y-4"
             >
-                <input onChange={(e) => setEmail(e.target.value)} placeholder="Your e-mail address" type="email" className="w-full h-[54px] border border-gray-300 px-4 rounded-xl" />
+                <input onChange={(e) => setEmail(e.target.value)} placeholder="Your e-mail address" type="email" className={`w-full h-[54px] border ${emailBorder} px-4 rounded-xl`} />
 
-                <input onChange={(e) => setPassword1(e.target.value)} placeholder="Your password" type="password" className="w-full h-[54px] border border-gray-300 rounded-xl px-4" />
-                <input onChange={(e) => setPassword2(e.target.value)} placeholder="Repeat password" type="password" className="w-full h-[54px] border border-gray-300 rounded-xl px-4" />
+                <input onChange={(e) => setPassword1(e.target.value)} placeholder="Your password" type="password" className={`w-full h-[54px] border ${password1Border} rounded-xl px-4`} />
+                <input onChange={(e) => setPassword2(e.target.value)} placeholder="Repeat password" type="password" className={`w-full h-[54px] border ${password2Border} rounded-xl px-4`} />
 
                 {errors.map((error, index) => {
                     return (
