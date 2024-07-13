@@ -1,14 +1,17 @@
 'use client';
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 import Modal from "./Modal";
 import useLoginModal from "../hooks/useLoginModal";
 
 import CustomButton from "../forms/CustomButton";
 import apiService from "@/app/services/apiService";
+import { handleLogin } from "@/app/lib/actions";
 
 const LoginModal = () => {
+    const router = useRouter();
     const loginModal = useLoginModal();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -23,8 +26,10 @@ const LoginModal = () => {
         const response = await apiService.post('/api/auth/jwt/create/', JSON.stringify(formData));
 
         if (response.access) {
-            //handle login
-            console.log('Logged')
+            handleLogin(response.access, response.refresh);
+
+            loginModal.close();
+            router.push('/');
         } else {
             setError(response.detail);
         }
