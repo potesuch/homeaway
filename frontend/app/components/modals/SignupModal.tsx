@@ -1,16 +1,16 @@
 'use client';
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 
 import Modal from "./Modal";
 import useSignupModal from "../hooks/useSignupModal";
 import CustomButton from "../forms/CustomButton";
 import apiService from "@/app/services/apiService";
+import useLoginModal from "../hooks/useLoginModal";
 
 const SignupModal = () => {
-    const router = useRouter();
     const signupModal = useSignupModal();
+    const loginModal = useLoginModal();
     const [email, setEmail] = useState('');
     const [password1, setPassword1] = useState('');
     const [password2, setPassword2] = useState('');
@@ -19,8 +19,8 @@ const SignupModal = () => {
     const submitSignup = async () => {
         const formData = {
             email: email,
-            password1: password1,
-            password2: password2
+            password: password1,
+            re_password: password2
         }
 
         const response = await apiService.post('/api/auth/users/', JSON.stringify(formData));
@@ -28,7 +28,7 @@ const SignupModal = () => {
         if (response.access) {
 
             signupModal.close();
-            router.push('/');
+            loginModal.open();
         } else {
             const tmpErrors: string[] = Object.values(response).map((error: any) => {
                 return error;
