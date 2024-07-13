@@ -25,8 +25,7 @@ const SignupModal = () => {
 
         const response = await apiService.post('/api/auth/users/', JSON.stringify(formData));
 
-        if (response.access) {
-
+        if (response.id) {
             signupModal.close();
             loginModal.open();
         } else {
