@@ -1,68 +1,55 @@
 import Image from "next/image";
+import { useState, useEffect } from "react";
+
+import apiService from "@/app/services/apiService";
 
 interface CategoriesProps {
     dataCategory: string;
     setCategory: (category: string) => void;
 }
 
+export type CategoryType = {
+    id: string;
+    name: string;
+    image: string;
+}
+
 const Categories: React.FC<CategoriesProps> = ({
     dataCategory,
     setCategory
 }) => {
+    const [categories, setCategories] = useState<CategoryType[]>([]);
+
+    const getCategories = async () => {
+        const tmpCategories = await apiService.get('/api/categories/');
+
+        setCategories(tmpCategories);
+    }
+
+    useEffect(() => {
+        getCategories();
+    }, []);
+    
     return (
         <>
             <div className="pt-3 cursor-pointer pb-6 flex items-center space-x-12">
-                <div
-                    onClick={() => setCategory('Beach')}
-                    className={`pb-2 flex flex-col items-center space-y-2 border-b-2 ${dataCategory == 'Beach' ? 'border-gray-800' : 'border-white'} opacity-60 hover:opacity-100 hover:border-gray-200`}
-                >
-                    <Image 
-                        src="/category_beach.svg"
-                        alt="Category - beach"
-                        width={25}
-                        height={25}
-                    />
-                    <span className="text-sm">Beach</span>
-                </div>
-
-                <div
-                    onClick={() => setCategory('Villas')}
-                    className={`pb-2 flex flex-col items-center space-y-2 border-b-2 ${dataCategory == 'Villas' ? 'border-gray-800' : 'border-white'} opacity-60 hover:opacity-100 hover:border-gray-200`}
-                >
-                    <Image 
-                        src="/category_villas.svg"
-                        alt="Category - villas"
-                        width={25}
-                        height={25}
-                    />
-                    <span className="text-sm">Villas</span>
-                </div>
-
-                <div
-                    onClick={() => setCategory('Cabins')}
-                    className={`pb-2 flex flex-col items-center space-y-2 border-b-2 ${dataCategory == 'Cabins' ? 'border-gray-800' : 'border-white'} opacity-60 hover:opacity-100 hover:border-gray-200`}
-                >
-                    <Image 
-                        src="/category_cabins.svg"
-                        alt="Category - cabins"
-                        width={25}
-                        height={25}
-                    />
-                    <span className="text-sm">Cabins</span>
-                </div>
-
-                <div
-                    onClick={() => setCategory('Tiny homes')}
-                    className={`pb-2 flex flex-col items-center space-y-2 border-b-2 ${dataCategory == 'Tiny homes' ? 'border-gray-800' : 'border-white'} opacity-60 hover:opacity-100 hover:border-gray-200`}
-                >
-                    <Image 
-                        src="/category_tiny_homes.svg"
-                        alt="Category - tiny homes"
-                        width={25}
-                        height={25}
-                    />
-                    <span className="text-sm">Tiny homes</span>
-                </div>
+                {categories.map((category) => {
+                    return (
+                        <div
+                            key={category.id}
+                            onClick={() => setCategory(category.id)}
+                            className={`pb-2 flex flex-col items-center space-y-2 border-b-2 ${dataCategory == category.id ? 'border-gray-800' : 'border-white'} opacity-60 hover:opacity-100 hover:border-gray-200`}
+                        >
+                            <Image 
+                                src={category.image}
+                                alt={`Category - ${category.name}`}
+                                width={25}
+                                height={25}
+                            />
+                            <span className="text-sm">{category.name}</span>
+                        </div>
+                    )
+                })}
             </div>
         </>
     )

@@ -1,15 +1,15 @@
 'use client';
 
 import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { ChangeEvent, useState } from "react";
 
 import Modal from "./Modal";
 import useAddPropertyModal from "../hooks/useAddPropertyModal";
 import CustomButton from "../forms/CustomButton";
-import { ChangeEvent, useState } from "react";
 import Categories from "../addproperty/Categories";
 import SelectCountry, { SelectCountryValue } from "../forms/SelectCountry";
 import apiService from "@/app/services/apiService";
-import { useRouter } from "next/navigation";
 
 const AddPropertyModal = () => {
     const router = useRouter();
