@@ -1,14 +1,14 @@
 from rest_framework import viewsets
-from rest_framework import permissions
 
 from .serializers import ShortPropertySerializer, PropertySerializer
+from .permissions import IsAuthorOrStuffOrReadOnly
 from properties.models import Property
 
 
 class PropertyViewSet(viewsets.ModelViewSet):
     queryset = Property.objects.all()
     serializer_class = PropertySerializer
-    permission_classes = (permissions.AllowAny,)
+    permission_classes = (IsAuthorOrStuffOrReadOnly,)
 
     def get_serializer_class(self):
         if self.action == 'list':
