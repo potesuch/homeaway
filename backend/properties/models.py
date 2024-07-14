@@ -15,7 +15,7 @@ class Category(models.Model):
         name (CharField): Название категории.
         image (ImageField): Изображение категории.
     """
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4)
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, unique=True)
     name = models.CharField(max_length=20)
     image = models.ImageField(upload_to='uploads/categories')
 
