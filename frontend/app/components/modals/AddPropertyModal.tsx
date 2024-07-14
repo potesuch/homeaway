@@ -8,8 +8,11 @@ import CustomButton from "../forms/CustomButton";
 import { ChangeEvent, useState } from "react";
 import Categories from "../addproperty/Categories";
 import SelectCountry, { SelectCountryValue } from "../forms/SelectCountry";
+import apiService from "@/app/services/apiService";
+import { useRouter } from "next/navigation";
 
 const AddPropertyModal = () => {
+    const router = useRouter();
     const addPropertyModal = useAddPropertyModal();
     const [currentStep, setCurrentStep] = useState(1);
     const [dataCategory, setDataCategory] = useState('');
@@ -32,6 +35,43 @@ const AddPropertyModal = () => {
             const tmpImage = event.target.files[0];
 
             setDataImage(tmpImage);
+        }
+    }
+
+    const submitForm = async () => {
+        if (
+            dataTitle &&
+            dataDescription &&
+            dataPrice &&
+            dataBedrooms &&
+            dataBathrooms &&
+            dataGuests &&
+            dataCountry &&
+            dataCategory &&
+            dataImage
+        ) {
+            const formData = new FormData();
+            formData.append('title', dataTitle);
+            formData.append('description', dataDescription);
+            formData.append('price_per_night', dataPrice);
+            formData.append('bedrooms', dataBedrooms);
+            formData.append('bathrooms', dataBathrooms);
+            formData.append('guests', dataGuests);
+            formData.append('country', dataCountry.label);
+            formData.append('country_code', dataCountry.value);
+            formData.append('category', dataCategory);
+            formData.append('image', dataImage);
+
+            const response = await apiService.post('/api/properties/', formData);
+
+            if (response.success) {
+                console.log('SUCCESS', response);
+
+                router.push('/');
+                addPropertyModal.close();
+            } else {
+                console.log('NOT SUCCESS', response);
+            }
         }
     }
 
