@@ -31,13 +31,17 @@ const LoginModal = () => {
             loginModal.close();
             router.push('/');
         } else {
-            setError(response.detail);
+            if (response.detail) {
+                setError(response.detail);
+            } else {
+                setError('Please enter credentials.')
+            }
         }
     }
 
     const content = (
         <>
-            <form action="" className="space-y-4">
+            <form action={submitLogin} className="space-y-4">
                 <input onChange={(e) => setEmail(e.target.value)} placeholder="Your e-mail address" type="email" className="w-full h-[54px] border border-gray-300 px-4 rounded-xl" />
 
                 <input onChange={(e) => setPassword(e.target.value)} placeholder="Your password" type="password" className="w-full h-[54px] border border-gray-300 rounded-xl px-4" />
@@ -48,7 +52,6 @@ const LoginModal = () => {
 
                 <CustomButton 
                     label='Submit'
-                    onClick={submitLogin}
                 />
             </form>
         </>

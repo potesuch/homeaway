@@ -76,7 +76,6 @@ const SignupModal = () => {
 
                 <CustomButton 
                     label='Submit'
-                    onClick={submitSignup}
                 />
             </form>
         </>
