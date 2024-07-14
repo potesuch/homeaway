@@ -13,6 +13,7 @@ class Category(models.Model):
     Attributes:
         id (UUIDField): Уникальный идентификатор категории.
         name (CharField): Название категории.
+        image (ImageField): Изображение категории.
     """
     id = models.UUIDField(primary_key=True, default=uuid.uuid4)
     name = models.CharField(max_length=20)
