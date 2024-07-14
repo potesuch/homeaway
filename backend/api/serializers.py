@@ -17,6 +17,7 @@ class PropertySerializer(serializers.ModelSerializer):
         model = Property
         fields = (
             'id',
+            'host',
             'title',
             'description',
             'bedrooms',
@@ -25,3 +26,4 @@ class PropertySerializer(serializers.ModelSerializer):
             'price_per_night',
             'image'
         )
+        read_only_fields = ('host',)
