@@ -15,6 +15,7 @@ const AddPropertyModal = () => {
 
             <CustomButton 
                 label="next"
+                type="button"
             />
         </>
     )

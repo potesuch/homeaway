@@ -76,6 +76,7 @@ const SignupModal = () => {
 
                 <CustomButton 
                     label='Submit'
+                    type='submit'
                 />
             </form>
         </>

@@ -52,6 +52,7 @@ const LoginModal = () => {
 
                 <CustomButton 
                     label='Submit'
+                    type='submit'
                 />
             </form>
         </>
