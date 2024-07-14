@@ -7,8 +7,7 @@ const apiService = {
 
         return new Promise((resolve, reject) => {
             const headers: { [key: string]: string } = {
-                'Accept': 'application/json',
-                'Content-type': 'application/json'
+                'Accept': 'application/json'
             }
 
             if (token) {
