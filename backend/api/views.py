@@ -1,8 +1,9 @@
 from rest_framework import viewsets
 
-from .serializers import ShortPropertySerializer, PropertySerializer
+from .serializers import (ShortPropertySerializer, PropertySerializer,
+                          CategorySerializer)
 from .permissions import IsAuthorOrStuffOrReadOnly
-from properties.models import Property
+from properties.models import Property, Category
 
 
 class PropertyViewSet(viewsets.ModelViewSet):
@@ -17,3 +18,8 @@ class PropertyViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(host=self.request.user)
+
+
+class CategoryViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
