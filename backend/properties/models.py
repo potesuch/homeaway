@@ -16,6 +16,7 @@ class Category(models.Model):
     """
     id = models.UUIDField(primary_key=True, default=uuid.uuid4)
     name = models.CharField(max_length=20)
+    image = models.ImageField(upload_to='uploads/categories')
 
     def __str__(self):
         return self.name
