@@ -75,7 +75,7 @@ const AddPropertyModal = () => {
 
             const response = await apiService.post('/api/properties/', formData);
 
-            if (response.success) {
+            if (response.id) {
                 console.log('SUCCESS', response);
 
                 router.push('/');
