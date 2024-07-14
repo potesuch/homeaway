@@ -23,7 +23,7 @@ const LoginModal = () => {
             password: password
         }
 
-        const response = await apiService.post('/api/auth/jwt/create/', JSON.stringify(formData));
+        const response = await apiService.post('/api/auth/jwt/create/', JSON.stringify(formData), 'application/json');
 
         if (response.access) {
             handleLogin(response.access, response.refresh);

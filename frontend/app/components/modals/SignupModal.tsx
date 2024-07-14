@@ -26,7 +26,7 @@ const SignupModal = () => {
             re_password: password2
         }
 
-        const response = await apiService.post('/api/auth/users/', JSON.stringify(formData));
+        const response = await apiService.post('/api/auth/users/', JSON.stringify(formData), 'application/json');
 
         if (response.id) {
             signupModal.close();

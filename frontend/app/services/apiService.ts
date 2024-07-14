@@ -30,14 +30,14 @@ const apiService = {
                 })
         })
     },
-    post: async function(url: string, data:any): Promise<any> {
+    post: async function(url: string, data:any, contentType: string): Promise<any> {
         console.log('post', url, data);
         const token = await getAccessToken();
 
         return new Promise((resolve, reject) => { 
             const headers: { [key: string]: string } = {
-                // 'Accept': 'application/json',
-                // 'Content-type': 'application/json'
+                'Accept': 'application/json',
+                'Content-type': contentType
             }
 
             if (token) {
