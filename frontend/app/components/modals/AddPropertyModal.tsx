@@ -39,7 +39,19 @@ const AddPropertyModal = () => {
     }
 
     const submitForm = async () => {
+        console.log(
+            dataTitle,
+            dataDescription, 
+            dataPrice,
+            dataBedrooms,
+            dataBathrooms,
+            dataGuests,
+            dataCountry,
+            dataImage,
+            dataCategory
+        )
         if (
+            dataCategory &&
             dataTitle &&
             dataDescription &&
             dataPrice &&
@@ -47,7 +59,6 @@ const AddPropertyModal = () => {
             dataBathrooms &&
             dataGuests &&
             dataCountry &&
-            dataCategory &&
             dataImage
         ) {
             const formData = new FormData();
@@ -248,7 +259,7 @@ const AddPropertyModal = () => {
                     <CustomButton
                         label='Submit'
                         type='button'
-                        onClick={() => console.log('Submit')}
+                        onClick={() => submitForm()}
                     />
                 </>
             )}
