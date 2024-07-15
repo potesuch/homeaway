@@ -1,12 +1,21 @@
 from rest_framework import viewsets, permissions, exceptions
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from djoser.views import UserViewSet
 
 from .serializers import (PropertyListSerializer, PropertySerializer,
                           CategorySerializer, ReservationListSerializer,
                           ReservationSerializer)
 from .permissions import IsAuthorOrStuffOrReadOnly
 from properties.models import Property, Category, Reservation
+
+
+class CustomUserViewSet(UserViewSet):
+
+    def get_permissions(self):
+        if self.action == 'me':
+            self.permission_classes = (permissions.IsAuthenticated,)
+        return super().get_permissions()
 
 
 class PropertyViewSet(viewsets.ModelViewSet):
