@@ -24,6 +24,7 @@ const AddPropertyModal = () => {
     const [dataGuests, setDataGuests] = useState('');
     const [dataCountry, setDataCountry] = useState<SelectCountryValue>();
     const [dataImage, setDataImage] = useState<File | null>(null);
+    const [errors, setErrors] = useState<string[]>([]);
 
 
     const setCategory = (category: string) => {
@@ -39,17 +40,8 @@ const AddPropertyModal = () => {
     }
 
     const submitForm = async () => {
-        console.log(
-            dataTitle,
-            dataDescription, 
-            dataPrice,
-            dataBedrooms,
-            dataBathrooms,
-            dataGuests,
-            dataCountry,
-            dataImage,
-            dataCategory
-        )
+        console.log('Submit')
+        
         if (
             dataCategory &&
             dataTitle &&
@@ -76,13 +68,19 @@ const AddPropertyModal = () => {
             const response = await apiService.post('/api/properties/', JSON.stringify(formData), 'multipart/form-data');
 
             if (response.id) {
-                console.log('SUCCESS', response);
+                console.log('SUCCESS');
 
                 router.push('/');
                 addPropertyModal.close();
             } else {
-                console.log('NOT SUCCESS', response);
+                console.log('NOT SUCCESS');
+
+                const tmpErrors: string[] = Object.values(response);
+                setErrors(tmpErrors);
             }
+        } else {
+            console.log('Error')
+            setErrors(['Fill in all the fields'])
         }
     }
 
@@ -248,6 +246,17 @@ const AddPropertyModal = () => {
                             </div>
                         )}
                     </div>
+
+                    {errors.map((error, index) => {
+                        return (
+                            <div
+                                key={`error_${index}`}
+                                className="p-5 mb-4 bg-helio-dark text-white rounded-xl opacity-80"
+                            >
+                                {error}
+                            </div>
+                        )
+                    })}
 
                     <CustomButton
                         label='Previous'
