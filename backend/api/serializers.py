@@ -50,6 +50,8 @@ class PropertySerializer(serializers.ModelSerializer):
             'guests',
             'price_per_night',
             'category',
+            'country',
+            'country_code',
             'image'
         )
 
@@ -62,7 +64,6 @@ class ReservationListSerializer(serializers.ModelSerializer):
 
 
 class ReservationSerializer(serializers.ModelSerializer):
-    nights = serializers.SerializerMethodField()
 
     class Meta:
         model = Reservation
@@ -77,10 +78,7 @@ class ReservationSerializer(serializers.ModelSerializer):
             'total_price',
             'created_at'
         )
-        read_only_fields = ('property', 'user', 'total_price')
-
-    def get_nights(self, obj):
-        return (obj.date_out - obj.date_in).days
+        read_only_fields = ('property', 'user', 'property', 'total_price', 'nights')
 
     def create(self, validated_data):
         date_in = validated_data.get('date_in')
@@ -95,6 +93,12 @@ class ReservationSerializer(serializers.ModelSerializer):
 
     def validate(self, data):
         now = dt.now().date()
-        if data['date_in'] < now or data['date_in'] > data['date_out']:
+        if data['date_in'] < now or data['date_in'] >= data['date_out']:
             raise serializers.ValidationError('Select the correct dates')
         return data
+
+    def validate_guests(self, value):
+        property = self.context.get('property')
+        if value > property.guests:
+            raise serializers.ValidationError('Number of guests is not correct')
+        return value

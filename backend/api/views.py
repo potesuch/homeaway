@@ -33,8 +33,10 @@ class PropertyViewSet(viewsets.ModelViewSet):
             property = Property.objects.get(id=kwargs.get('pk'))
         except Property.DoesNotExist:
             raise exceptions.NotFound
-        user = self.request.user
-        serializer = ReservationSerializer(data=request.data)
+        user = request.user
+        serializer = ReservationSerializer(
+            data=request.data, context={'property': property}
+        )
         if serializer.is_valid():
             serializer.save(
                 user=user,
