@@ -1,7 +1,17 @@
+from django.contrib.auth import get_user_model
 from rest_framework import serializers
-from djoser.serializers import UserCreateSerializer
+from djoser.serializers import UserSerializer
 
 from properties.models import Property, Category
+
+User = get_user_model()
+
+
+class CustomUserSerializer(UserSerializer):
+
+    class Meta:
+        model = User
+        fields = ('id', 'name', 'avatar')
 
 
 class CategorySerializer(serializers.ModelSerializer):
