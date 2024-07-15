@@ -48,7 +48,7 @@ class PropertyViewSet(viewsets.ModelViewSet):
     @action(
         detail=True,
         methods=['GET'],
-        permission_classes=(permissions.IsAuthenticated,),
+        permission_classes=(permissions.AllowAny,),
         url_path='reservations'
     )
     def property_reservations(self, request, *args, **kwargs):

@@ -102,7 +102,7 @@ class ReservationSerializer(serializers.ModelSerializer):
         for reservation in reservations:
             if (
                 date_in <= reservation.date_out
-                and date_out >= reservation.date_in
+                and date_out > reservation.date_in
             ):
                 raise serializers.ValidationError(
                     'This dates are already booked'
