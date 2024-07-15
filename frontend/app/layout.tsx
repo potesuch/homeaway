@@ -6,6 +6,7 @@ import Navbar from "./components/navbar/NavBar";
 import LoginModal from "./components/modals/LoginModal";
 import SignupModal from "./components/modals/SignupModal";
 import AddPropertyModal from "./components/modals/AddPropertyModal";
+import ClientWrapper from "./components/ClientWrapper";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,22 +20,21 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const content = (
-    <p>test</p>
-  );
   
   return (
     <html lang="en">
       <body className={inter.className}>
-        <Navbar />
+        <ClientWrapper>
+          <Navbar />
 
-        <div className="pt-32">
-          {children}
-        </div>
+          <div className="pt-32">
+            {children}
+          </div>
 
-        <LoginModal />
-        <SignupModal />
-        <AddPropertyModal />
+          <LoginModal />
+          <SignupModal />
+          <AddPropertyModal />
+        </ClientWrapper>
       </body>
     </html>
   );
