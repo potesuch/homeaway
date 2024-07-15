@@ -100,5 +100,7 @@ class ReservationSerializer(serializers.ModelSerializer):
     def validate_guests(self, value):
         property = self.context.get('property')
         if value > property.guests:
-            raise serializers.ValidationError('Number of guests is not correct')
+            raise serializers.ValidationError(
+                'Number of guests is not correct'
+            )
         return value

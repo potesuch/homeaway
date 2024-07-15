@@ -45,6 +45,21 @@ class PropertyViewSet(viewsets.ModelViewSet):
             return Response(serializer.data, status=201)
         return Response(serializer.errors, status=400)
 
+    @action(
+        detail=True,
+        methods=['GET'],
+        permission_classes=(permissions.IsAuthenticated,),
+        url_path='reservations'
+    )
+    def property_reservations(self, request, *args, **kwargs):
+        try:
+            property = Property.objects.get(id=kwargs.get('pk'))
+        except Property.DoesNotExist:
+            raise exceptions.NotFound
+        reservations = property.reservations.all()
+        serializer = ReservationListSerializer(reservations, many=True)
+        return Response(serializer.data, status=200)
+
 
 class CategoryViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Category.objects.all()
