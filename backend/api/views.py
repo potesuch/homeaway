@@ -1,10 +1,12 @@
-from rest_framework import viewsets
-from rest_framework import permissions
+from rest_framework import viewsets, permissions, exceptions
+from rest_framework.decorators import action
+from rest_framework.response import Response
 
-from .serializers import (ShortPropertySerializer, PropertySerializer,
-                          CategorySerializer)
+from .serializers import (PropertyListSerializer, PropertySerializer,
+                          CategorySerializer, ReservationListSerializer,
+                          ReservationSerializer)
 from .permissions import IsAuthorOrStuffOrReadOnly
-from properties.models import Property, Category
+from properties.models import Property, Category, Reservation
 
 
 class PropertyViewSet(viewsets.ModelViewSet):
@@ -14,11 +16,32 @@ class PropertyViewSet(viewsets.ModelViewSet):
 
     def get_serializer_class(self):
         if self.action == 'list':
-            return ShortPropertySerializer
+            return PropertyListSerializer
         return super().get_serializer_class()
 
     def perform_create(self, serializer):
         serializer.save(host=self.request.user)
+
+    @action(
+        detail=True,
+        methods=['POST'],
+        permission_classes=(permissions.IsAuthenticated,),
+        url_path='book'
+    )
+    def book_property(self, request, *args, **kwargs):
+        try:
+            property = Property.objects.get(id=kwargs.get('pk'))
+        except Property.DoesNotExist:
+            raise exceptions.NotFound
+        user = self.request.user
+        serializer = ReservationSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save(
+                user=user,
+                property=property
+            )
+            return Response(serializer.data, status=201)
+        return Response(serializer.errors, status=400)
 
 
 class CategoryViewSet(viewsets.ReadOnlyModelViewSet):
