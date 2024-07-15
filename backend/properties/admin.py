@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Property, Category
+from .models import Property, Category, Reservation
 
 
 @admin.register(Property)
@@ -31,3 +31,16 @@ class CategoryAdmin(admin.ModelAdmin):
     list_display = ('id', 'name')
     list_display_links = ('id', 'name')
     search_fields = ('id', 'name')
+
+
+@admin.register(Reservation)
+class ReservationAdmin(admin.ModelAdmin):
+    """
+    Административная панель для управления бронированиями.
+    """
+    list_display = (
+        'id', 'property', 'user', 'date_in', 'date_out', 'total_price'
+    )
+    list_filter = ('date_in', 'date_out', 'total_price')
+    search_fields = ('id', 'property', 'user')
+    ordering = ('-created_at',)
