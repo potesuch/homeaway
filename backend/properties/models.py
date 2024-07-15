@@ -79,3 +79,33 @@ class Favorite(models.Model):
     user = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name='favorited'
     )
+
+
+class Reservation(models.Model):
+    """
+    Модель бронирования, представляющая собой запись о бронировании объекта недвижимости.
+
+    Attributes:
+        id (UUIDField): Уникальный идентификатор бронирования.
+        property (ForeignKey): Связь с моделью Property, указывающая на забронированный объект недвижимости.
+        user (ForeignKey): Связь с моделью User, указывающая на пользователя, совершившего бронирование.
+        guests (IntegerField): Количество гостей, указанное при бронировании.
+        date_in (DateField): Дата заезда.
+        date_out (DateField): Дата выезда.
+        nights (IntegerField): Количество ночей бронирования.
+        total_price (FloatField): Общая стоимость бронирования.
+        created_at (DateTimeField): Дата и время создания записи.
+    """
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4)
+    property = models.ForeignKey(
+        Property, related_name='reservations', on_delete=models.CASCADE
+    )
+    user = models.ForeignKey(
+        User, related_name='reservations', on_delete=models.CASCADE
+    )
+    guests = models.IntegerField()
+    date_in = models.DateField()
+    date_out = models.DateField()
+    nights = models.IntegerField()
+    total_price = models.FloatField()
+    created_at = models.DateTimeField(auto_now_add=True)
