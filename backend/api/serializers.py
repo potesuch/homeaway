@@ -29,6 +29,7 @@ class ShortPropertySerializer(serializers.ModelSerializer):
 
 
 class PropertySerializer(serializers.ModelSerializer):
+    host = CustomUserSerializer(read_only=True)
     category = serializers.PrimaryKeyRelatedField(
         queryset=Category.objects.all(),
         write_only=True,
@@ -49,4 +50,3 @@ class PropertySerializer(serializers.ModelSerializer):
             'category',
             'image'
         )
-        read_only_fields = ('host',)
