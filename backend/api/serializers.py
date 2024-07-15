@@ -93,8 +93,20 @@ class ReservationSerializer(serializers.ModelSerializer):
 
     def validate(self, data):
         now = dt.now().date()
-        if data['date_in'] < now or data['date_in'] >= data['date_out']:
+        date_in = data['date_in']
+        date_out = data['date_out']
+        if date_in < now or date_in >= date_out:
             raise serializers.ValidationError('Select the correct dates')
+        property = self.context.get('property')
+        reservations = Reservation.objects.filter(property=property.id)
+        for reservation in reservations:
+            if (
+                date_in <= reservation.date_out
+                and date_out >= reservation.date_in
+            ):
+                raise serializers.ValidationError(
+                    'This dates are already booked'
+                )
         return data
 
     def validate_guests(self, value):
