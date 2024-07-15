@@ -65,7 +65,7 @@ const AddPropertyModal = () => {
             formData.append('category', dataCategory);
             formData.append('image', dataImage);
 
-            const response = await apiService.post('/api/properties/', JSON.stringify(formData), 'multipart/form-data');
+            const response = await apiService.post('/api/properties/', formData);
 
             if (response.id) {
                 console.log('SUCCESS');
