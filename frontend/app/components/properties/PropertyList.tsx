@@ -12,11 +12,23 @@ export type PropertyType = {
     image: string;
 };
 
-const PropertyList = () => {
+interface PropertyListProps {
+    host_id?: string;
+}
+
+const PropertyList: React.FC<PropertyListProps> = ({
+    host_id
+}) => {
     const [properties, setProperties] = useState<PropertyType[]>([]);
-    
+
     const getProperties = async () => {
-        const tmpProperties = await apiService.get('/api/properties/');
+        let url = '/api/properties/';
+    
+        if (host_id) {
+            url += `?host=${host_id}`;
+        }
+
+        const tmpProperties = await apiService.get(url);
 
         setProperties(tmpProperties);
     };

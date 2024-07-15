@@ -2,6 +2,7 @@ import Image from "next/image";
 
 import ReservationSideBar from "@/app/components/properties/ReservationSideBar";
 import apiService from "@/app/services/apiService";
+import Link from "next/link";
 
 const PropertyDetailPage = async ({params}: {params: {id: string}}) => {
     const property = await apiService.get(`/api/properties/${params.id}`)
@@ -27,18 +28,19 @@ const PropertyDetailPage = async ({params}: {params: {id: string}}) => {
 
                     <hr />
 
-                    <div className="py-6 flex items-center space-x-4">
-                        {property.host.avatar && (
-                            <Image
-                                src={property.host.avatar}
-                                width={50}
-                                height={50}
-                                className="rounded-full"
-                                alt={property.host.name}
-                            />
-                        )}
+                    <Link
+                        href={`/hosts/${property.host.id}`}
+                        className="py-6 flex items-center space-x-4"
+                    >
+                        <Image
+                            src={property.host.avatar ? property.host.avatar : '/profile_pic.png'}
+                            width={50}
+                            height={50}
+                            className="rounded-full"
+                            alt={property.host.name}
+                        />
                         <p><strong>{property.host.name}</strong> is your host</p>
-                    </div>
+                    </Link>
 
                     <hr />
 
