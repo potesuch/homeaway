@@ -17,7 +17,7 @@ const PropertyDetailPage = async ({params}: {params: {id: string}}) => {
                 />
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-5 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
                 <div className="py-6 pr-6 col-span-3">
                     <h1 className="mb-4 text-4xl">{property.name}</h1>
 
@@ -42,7 +42,7 @@ const PropertyDetailPage = async ({params}: {params: {id: string}}) => {
 
                     <hr />
 
-                    <p className="mt-6 text-lg">
+                    <p className="mt-6 text-lg break-words">
                         {property.description}
                     </p>
                 </div>
