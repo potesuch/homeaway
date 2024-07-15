@@ -13,6 +13,7 @@ class PropertyViewSet(viewsets.ModelViewSet):
     queryset = Property.objects.all()
     serializer_class = PropertySerializer
     permission_classes = (IsAuthorOrStuffOrReadOnly,)
+    filterset_fields = ('host',)
 
     def get_serializer_class(self):
         if self.action == 'list':
