@@ -1,49 +1,55 @@
 import Image from "next/image";
 
 import ReservationSideBar from "@/app/components/properties/ReservationSideBar";
+import apiService from "@/app/services/apiService";
 
-const PropertyDetailPage = () => {
+const PropertyDetailPage = async ({params}: {params: {id: string}}) => {
+    const property = await apiService.get(`/api/properties/${params.id}`)
+    
     return (
         <main className="max-w-[1500px] mx-auto px-6 pb-6">
             <div className="relative mb-4 w-full h-[64vh] overflow-hidden rounded-xl">
                 <Image
                     fill
-                    src="/house_1.jpg"
+                    src={property.image}
                     className="object-cover w-full h-full"
                     alt="House"
                 />
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
+            <div className="grid grid-cols-1 lg:grid-cols-5 gap-4">
                 <div className="py-6 pr-6 col-span-3">
-                    <h1 className="mb-4 text-4xl">Property name</h1>
+                    <h1 className="mb-4 text-4xl">{property.name}</h1>
 
                     <span className="mb-6 block text-lg text-gray-600">
-                        4 guests - 2 bedrooms - 1 bathroom
+                        {property.guests} guests - {property.bedrooms} bedrooms - {property.bathrooms} bathrooms
                     </span>
 
                     <hr />
 
                     <div className="py-6 flex items-center space-x-4">
-                        <Image
-                            src="/profile_pic.png"
-                            width={50}
-                            height={50}
-                            className="rounded-full"
-                            alt="The user name"
-                        />
-                        <p><strong>John Doe</strong> is your host</p>
+                        {property.host.avatar && (
+                            <Image
+                                src={property.host.avatar}
+                                width={50}
+                                height={50}
+                                className="rounded-full"
+                                alt={property.host.name}
+                            />
+                        )}
+                        <p><strong>{property.host.name}</strong> is your host</p>
                     </div>
 
                     <hr />
 
                     <p className="mt-6 text-lg">
-                        sdafffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffccvzxczv
-                        asdfffffffffffffffffffffcvbxdfbdfgsdgasdg
+                        {property.description}
                     </p>
                 </div>
                 
-                <ReservationSideBar />
+                <ReservationSideBar
+                    property={property}
+                />
             </div>
         </main>
     );
