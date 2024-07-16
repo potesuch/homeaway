@@ -24,13 +24,21 @@ class CategorySerializer(serializers.ModelSerializer):
 
 
 class PropertyListSerializer(serializers.ModelSerializer):
+    is_favorite = serializers.SerializerMethodField()
 
     class Meta:
         model = Property
-        fields = ('id', 'title', 'price_per_night', 'image')
+        fields = ('id', 'title', 'price_per_night', 'image', 'is_favorite')
+
+    def get_is_favorite(self, obj):
+        is_favorite = False
+        user = self.context.get('request').user
+        if user.is_authenticated and obj.in_favorite.filter(user=user):
+            is_favorite = True
+        return is_favorite
 
 
-class PropertySerializer(serializers.ModelSerializer):
+class PropertySerializer(PropertyListSerializer):
     host = CustomUserSerializer(read_only=True)
     category = serializers.PrimaryKeyRelatedField(
         queryset=Category.objects.all(),
@@ -52,7 +60,8 @@ class PropertySerializer(serializers.ModelSerializer):
             'category',
             'country',
             'country_code',
-            'image'
+            'image',
+            'is_favorite'
         )
 
 

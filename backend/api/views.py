@@ -32,7 +32,7 @@ class CustomUserViewSet(UserViewSet):
 
 
 class PropertyViewSet(viewsets.ModelViewSet):
-    queryset = Property.objects.all()
+    queryset = Property.objects.prefetch_related('in_favorite')
     serializer_class = PropertySerializer
     permission_classes = (IsAuthorOrStuffOrReadOnly,)
     filterset_fields = ('host',)
