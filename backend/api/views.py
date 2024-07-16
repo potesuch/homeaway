@@ -5,10 +5,11 @@ from djoser.views import UserViewSet
 
 from .serializers import (PropertyListSerializer, PropertySerializer,
                           CategorySerializer, ReservationListSerializer,
-                          ReservationSerializer)
+                          ReservationSerializer, ConversationListSerializer)
 from .permissions import IsAuthorOrStuffOrReadOnly
 from .filters import PropertyFilter
 from properties.models import Property, Category, Favorite
+from chat.models import Conversation
 
 
 class CustomUserViewSet(UserViewSet):
@@ -24,11 +25,22 @@ class CustomUserViewSet(UserViewSet):
         permission_classes=(permissions.IsAuthenticated,),
         url_path='me/reservations'
     )
-    def reservation_list(self, request, *args, **kwargs):
+    def reservation_list(self, request):
         reservations = request.user.reservations.all()
         serializer = ReservationListSerializer(
             reservations, many=True, context={'request': request}
         )
+        return Response(serializer.data, status=200)
+
+    @action(
+        methods=['GET'],
+        detail=False,
+        permission_classes=(permissions.IsAuthenticated,),
+        url_path='me/conversations'
+    )
+    def conversation_list(self, request):
+        conversations = request.user.conversations.all()
+        serializer = ConversationListSerializer(conversations, many=True)
         return Response(serializer.data, status=200)
 
 

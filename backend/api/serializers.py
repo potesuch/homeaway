@@ -5,6 +5,7 @@ from rest_framework import serializers
 from djoser.serializers import UserSerializer
 
 from properties.models import Property, Category, Reservation
+from chat.models import Conversation, ConversationMessage
 
 User = get_user_model()
 
@@ -129,3 +130,11 @@ class ReservationSerializer(serializers.ModelSerializer):
                 'Number of guests is not correct'
             )
         return value
+
+
+class ConversationListSerializer(serializers.ModelSerializer):
+    users = UserSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Conversation
+        fields = ('id', 'users', 'modified_at')
