@@ -97,8 +97,8 @@ class PropertyViewSet(viewsets.ModelViewSet):
         )
         if not created:
             favorite.delete()
-            return Response({'in_favorite': False}, status=200)
-        return Response({'in_favorite': True}, status=200)
+            return Response({'is_favorite': False}, status=200)
+        return Response({'is_favorite': True}, status=200)
 
 
 class CategoryViewSet(viewsets.ReadOnlyModelViewSet):
