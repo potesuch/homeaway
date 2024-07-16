@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'users.apps.UsersConfig',
     'properties.apps.PropertiesConfig',
     'api.apps.ApiConfig',
+    'chat.apps.ChatConfig',
 ]
 
 MIDDLEWARE = [
