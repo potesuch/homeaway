@@ -7,6 +7,7 @@ from .serializers import (PropertyListSerializer, PropertySerializer,
                           CategorySerializer, ReservationListSerializer,
                           ReservationSerializer)
 from .permissions import IsAuthorOrStuffOrReadOnly
+from .filters import PropertyFilter
 from properties.models import Property, Category, Favorite
 
 
@@ -35,7 +36,7 @@ class PropertyViewSet(viewsets.ModelViewSet):
     queryset = Property.objects.prefetch_related('in_favorite')
     serializer_class = PropertySerializer
     permission_classes = (IsAuthorOrStuffOrReadOnly,)
-    filterset_fields = ('host',)
+    filterset_class = PropertyFilter
 
     def get_serializer_class(self):
         if self.action == 'list':
