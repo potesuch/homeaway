@@ -3,6 +3,7 @@ import { useRouter } from "next/navigation";
 
 import { PropertyType } from "./PropertyList";
 import FavoriteButton from "../FavoriteButton";
+import useUser from "../hooks/useUser";
 
 interface PropertyProps {
     property: PropertyType;
@@ -13,6 +14,7 @@ const PropertyListItem: React.FC<PropertyProps> = ({
     property,
     markFavorite
 }) => {
+    const { user } = useUser();
     const router = useRouter();
     
     return (
@@ -29,7 +31,7 @@ const PropertyListItem: React.FC<PropertyProps> = ({
                     alt="House"
                 />
 
-                {markFavorite && (
+                {user && markFavorite &&(
                     <FavoriteButton
                         id={property.id}
                         is_favorite={property.is_favorite}
