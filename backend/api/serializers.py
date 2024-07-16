@@ -57,10 +57,14 @@ class PropertySerializer(serializers.ModelSerializer):
 
 
 class ReservationListSerializer(serializers.ModelSerializer):
+    property = PropertyListSerializer()
 
     class Meta:
         model = Reservation
-        fields = ('id', 'date_in', 'date_out')
+        fields = (
+            'id', 'property', 'date_in', 'date_out', 'nights', 'total_price'
+        )
+        read_only_fields = ('property', 'nights', 'total_price')
 
 
 class ReservationSerializer(serializers.ModelSerializer):

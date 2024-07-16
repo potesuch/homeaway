@@ -7,7 +7,7 @@ from .serializers import (PropertyListSerializer, PropertySerializer,
                           CategorySerializer, ReservationListSerializer,
                           ReservationSerializer)
 from .permissions import IsAuthorOrStuffOrReadOnly
-from properties.models import Property, Category, Reservation
+from properties.models import Property, Category
 
 
 class CustomUserViewSet(UserViewSet):
@@ -16,6 +16,17 @@ class CustomUserViewSet(UserViewSet):
         if self.action == 'me':
             self.permission_classes = (permissions.IsAuthenticated,)
         return super().get_permissions()
+
+    @action(
+        methods=['GET'],
+        detail=False,
+        permission_classes=(permissions.IsAuthenticated,),
+        url_path='me/reservations'
+    )
+    def reservation_list(self, request, *args, **kwargs):
+        reservations = request.user.reservations.all()
+        serializer = ReservationListSerializer(reservations, many=True)
+        return Response(serializer.data, status=200)
 
 
 class PropertyViewSet(viewsets.ModelViewSet):
