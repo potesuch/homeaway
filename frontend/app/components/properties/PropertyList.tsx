@@ -10,6 +10,7 @@ export type PropertyType = {
     title: string;
     price_per_night: number;
     image: string;
+    is_favorite: boolean;
 };
 
 interface PropertyListProps {
@@ -20,6 +21,24 @@ const PropertyList: React.FC<PropertyListProps> = ({
     host_id
 }) => {
     const [properties, setProperties] = useState<PropertyType[]>([]);
+
+    const markFavorite = (id: string, is_favorite: boolean) => {
+        const tmpProperties = properties.map((property: PropertyType) => {
+            if (property.id == id) {
+                property.is_favorite = is_favorite;
+
+                if (is_favorite) {
+                    console.log('Added to list of favorited properties');
+                } else {
+                    console.log('Removed from list of favorited properties');
+                }
+            }
+
+            return property;
+        })
+
+        setProperties(tmpProperties)
+    }
 
     const getProperties = async () => {
         let url = '/api/properties/';
@@ -44,6 +63,7 @@ const PropertyList: React.FC<PropertyListProps> = ({
                     <PropertyListItem 
                         key={property.id}
                         property={property}
+                        markFavorite={(is_favorite: boolean) => markFavorite(property.id, is_favorite)}
                     />
                 )
             })}

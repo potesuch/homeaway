@@ -8,7 +8,7 @@ interface FavoriteButtonProps {
     markFavorite: (is_favorite: boolean) => void;
 }
 
-const FavoriteButtonProps: React.FC<FavoriteButtonProps> = ({
+const FavoriteButton: React.FC<FavoriteButtonProps> = ({
     id,
     is_favorite,
     markFavorite
@@ -17,7 +17,7 @@ const FavoriteButtonProps: React.FC<FavoriteButtonProps> = ({
         e.stopPropagation();
 
         const response = await apiService.post(`/api/properties/${id}/toggle_favorite/`, {})
-
+        console.log('IS_FAVORITE', response.is_favorite)
         markFavorite(response.is_favorite);
     }
     
@@ -33,4 +33,4 @@ const FavoriteButtonProps: React.FC<FavoriteButtonProps> = ({
     )
 }
 
-export default FavoriteButtonProps;
+export default FavoriteButton;
