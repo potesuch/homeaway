@@ -2,6 +2,8 @@
 
 import useUser from "../components/hooks/useUser";
 
+import PropertyList from "../components/properties/PropertyList";
+
 const MyFavoritesPage = () => {
     const { user } = useUser();
     
