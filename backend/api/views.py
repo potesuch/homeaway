@@ -7,7 +7,7 @@ from .serializers import (PropertyListSerializer, PropertySerializer,
                           CategorySerializer, ReservationListSerializer,
                           ReservationSerializer)
 from .permissions import IsAuthorOrStuffOrReadOnly
-from properties.models import Property, Category
+from properties.models import Property, Category, Favorite
 
 
 class CustomUserViewSet(UserViewSet):
@@ -82,6 +82,23 @@ class PropertyViewSet(viewsets.ModelViewSet):
         reservations = property.reservations.all()
         serializer = ReservationListSerializer(reservations, many=True)
         return Response(serializer.data, status=200)
+
+    @action(
+        detail=True,
+        methods=['POST'],
+    )
+    def toggle_favorite(self, request, *args, **kwargs):
+        try:
+            property = Property.objects.get(id=kwargs.get('pk'))
+        except Property.DoesNotExist:
+            raise exceptions.NotFound
+        favorite, created = Favorite.objects.get_or_create(
+            property=property, user=request.user
+        )
+        if not created:
+            favorite.delete()
+            return Response({'favorited': False}, status=200)
+        return Response({'favorited': True}, status=200)
 
 
 class CategoryViewSet(viewsets.ReadOnlyModelViewSet):
