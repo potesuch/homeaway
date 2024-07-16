@@ -6,6 +6,8 @@ import { differenceInDays, eachDayOfInterval, format} from 'date-fns'
 
 import DatePicker from '../forms/Calendar';
 import apiService from '@/app/services/apiService';
+import useUser from '../hooks/useUser';
+import useLoginModal from '../hooks/useLoginModal';
 
 const initialDateRange = {
     startDate: new Date(),
@@ -26,6 +28,8 @@ interface ReservationSideBarProps {
 const ReservationSideBar: React.FC<ReservationSideBarProps> = ({
     property
 }) => {
+    const { user } = useUser();
+    const loginModal = useLoginModal();
     const [fee, setFee] = useState<number>(0);
     const [nights, setNights] = useState<number>(1);
     const [totalPrice, setTotalPrice] = useState<number>(0);
@@ -35,19 +39,23 @@ const ReservationSideBar: React.FC<ReservationSideBarProps> = ({
     const guestsRange = Array.from({ length: property.guests }, (_, index) => index + 1)
 
     const performBooking = async () => {
-        if (dateRange.startDate && dateRange.endDate) {
-            const formData = new FormData();
-            formData.append('guests', guests);
-            formData.append('date_in', format(dateRange.startDate, 'yyy-MM-dd'));
-            formData.append('date_out', format(dateRange.endDate, 'yyy-MM-dd'));
-            
-            const response = await apiService.post(`/api/properties/${property.id}/book/`, formData)
+        if (user) {
+            if (dateRange.startDate && dateRange.endDate) {
+                const formData = new FormData();
+                formData.append('guests', guests);
+                formData.append('date_in', format(dateRange.startDate, 'yyy-MM-dd'));
+                formData.append('date_out', format(dateRange.endDate, 'yyy-MM-dd'));
+                
+                const response = await apiService.post(`/api/properties/${property.id}/book/`, formData)
 
-            if (response.id) {
-                console.log('SUCCESS', response);
-            } else {
-                console.log('ERROR', response);
+                if (response.id) {
+                    console.log('SUCCESS', response);
+                } else {
+                    console.log('ERROR', response);
+                }
             }
+        } else {
+            loginModal.open();
         }
     }
 

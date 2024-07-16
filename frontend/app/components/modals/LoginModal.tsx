@@ -9,8 +9,10 @@ import useLoginModal from "../hooks/useLoginModal";
 import CustomButton from "../forms/CustomButton";
 import apiService from "@/app/services/apiService";
 import { handleLogin } from "@/app/lib/actions";
+import useUser from "../hooks/useUser";
 
 const LoginModal = () => {
+    const user = useUser();
     const router = useRouter();
     const loginModal = useLoginModal();
     const [email, setEmail] = useState('');
@@ -29,7 +31,7 @@ const LoginModal = () => {
             handleLogin(response.access, response.refresh);
 
             loginModal.close();
-            router.push('/');
+            router.push('/?refresh=login');
         } else {
             if (response.detail) {
                 setError(response.detail);

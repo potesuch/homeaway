@@ -1,10 +1,14 @@
+'use client';
+
 import Image from "next/image";
 
 import ContactButton from "@/app/components/ContactButton";
 import PropertyList from "@/app/components/properties/PropertyList";
 import apiService from "@/app/services/apiService";
+import useUser from "@/app/components/hooks/useUser";
 
 const HostDetailPage = async ({params}: {params: {id: string}}) => {
+    const { user } = useUser();
     const host = await apiService.get(`/api/auth/users/${params.id}`);
     
     return (
@@ -21,7 +25,9 @@ const HostDetailPage = async ({params}: {params: {id: string}}) => {
                         />
 
                         <h1 className="mt-6 text-2xl">{host.name}</h1>
-                        <ContactButton />
+                        { user &&
+                            <ContactButton />
+                        }
                     </div>
                 </aside>
 

@@ -5,14 +5,17 @@ import { useRouter } from "next/navigation";
 import apiService from "../services/apiService";
 import MenuLink from "./navbar/MenuLink";
 import { resetAuthCookies } from "../lib/actions";
+import useUser from "./hooks/useUser";
 
 const LogoutButton = () => {
+    const user = useUser();
     const router = useRouter();
 
     const submitLogout = async () => {
         resetAuthCookies();
 
-        router.push('/');
+        user.clearUser();
+        router.push('/?refresh=logout');
     }
     
     return (

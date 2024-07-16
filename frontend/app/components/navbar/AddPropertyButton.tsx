@@ -1,12 +1,20 @@
 'use client';
 
 import useAddPropertyModal from "../hooks/useAddPropertyModal";
+import useLoginModal from "../hooks/useLoginModal";
+import useUser from "../hooks/useUser";
 
 const AddPropertyButton = () => {
+    const { user } = useUser();
     const addPropertyModal = useAddPropertyModal();
+    const loginModal = useLoginModal();
 
     function handleAddPropertyButton() {
-        addPropertyModal.open();
+        if (user) {
+            addPropertyModal.open();
+        } else {
+            loginModal.open();
+        }
     }
     
     return (

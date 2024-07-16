@@ -8,16 +8,14 @@ export type User = {
 
 interface useUserStore {
     user: User | null;
-    is_authorized: boolean;
     setUser: (user: User) => void;
     clearUser: () => void;
 }
 
 const useUser = create<useUserStore> ((set) => ({
     user: null,
-    is_authorized: false,
-    setUser: (user) => set({ user: user, is_authorized: true }),
-    clearUser: () => set({ user: null, is_authorized: false })
+    setUser: (user) => set({ user: user }),
+    clearUser: () => set({ user: null })
 }))
 
 export default useUser;

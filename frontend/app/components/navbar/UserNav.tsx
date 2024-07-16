@@ -5,8 +5,13 @@ import { useState } from "react";
 import MenuLink from "./MenuLink";
 import useLoginModal from "../hooks/useLoginModal";
 import useSignupModal from "../hooks/useSignupModal";
+import useUser from "../hooks/useUser";
+import LogoutButton from "../LogoutButton";
+import { useRouter } from "next/navigation";
 
 const UserNav = () => {
+    const { user } = useUser();
+    const router = useRouter();
     const loginModal = useLoginModal();
     const signupModal = useSignupModal();
     const [isOpen, setIsOpen] = useState(false)
@@ -28,20 +33,44 @@ const UserNav = () => {
 
             {isOpen && (
                 <div className="w-[220px] absolute top-[60px] right-0 bg-white border rounded-xl shadow-md flex-col cursor-pointer">
-                    <MenuLink
-                        label='Log in'
-                        onClick={() => {
-                            setIsOpen(false);
-                            loginModal.open();
-                        }}
-                    />
-                    <MenuLink
-                        label='Sign up'
-                        onClick={() => {
-                            setIsOpen(false);
-                            signupModal.open();
-                        }}
-                    />
+                    {user ? (
+                        <>
+                            <MenuLink
+                                label='My properties'
+                                onClick={() => {
+                                    setIsOpen(false);
+                                    router.push('/myproperties');
+                                }}
+                            />
+
+                            <MenuLink
+                                label='My reservations'
+                                onClick={() => {
+                                    setIsOpen(false);
+                                    router.push('/myreservations');
+                                }}
+                            />
+                            
+                            <LogoutButton />
+                        </>
+                    ) : (
+                        <>
+                            <MenuLink
+                                label='Log in'
+                                onClick={() => {
+                                    setIsOpen(false);
+                                    loginModal.open();
+                                }}
+                            />
+                            <MenuLink
+                                label='Sign up'
+                                onClick={() => {
+                                    setIsOpen(false);
+                                    signupModal.open();
+                                }}
+                            />
+                        </>
+                    )}
                 </div>
             )}
         </div>
