@@ -80,7 +80,9 @@ class PropertyViewSet(viewsets.ModelViewSet):
         except Property.DoesNotExist:
             raise exceptions.NotFound
         reservations = property.reservations.all()
-        serializer = ReservationListSerializer(reservations, many=True)
+        serializer = ReservationListSerializer(
+            reservations, many=True, context={'request': request}
+        )
         return Response(serializer.data, status=200)
 
     @action(
