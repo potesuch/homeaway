@@ -25,7 +25,9 @@ class CustomUserViewSet(UserViewSet):
     )
     def reservation_list(self, request, *args, **kwargs):
         reservations = request.user.reservations.all()
-        serializer = ReservationListSerializer(reservations, many=True)
+        serializer = ReservationListSerializer(
+            reservations, many=True, context={'request': request}
+        )
         return Response(serializer.data, status=200)
 
 
