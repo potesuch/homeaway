@@ -1,15 +1,26 @@
 'use client';
 
+import { useEffect, useState } from "react";
 import Image from "next/image";
 
 import ContactButton from "@/app/components/ContactButton";
 import PropertyList from "@/app/components/properties/PropertyList";
 import apiService from "@/app/services/apiService";
-import useUser from "@/app/components/hooks/useUser";
+import useUser, { User } from "@/app/components/hooks/useUser";
 
-const HostDetailPage = async ({params}: {params: {id: string}}) => {
+const HostDetailPage = ({params}: {params: {id: string}}) => {
     const { user } = useUser();
-    const host = await apiService.get(`/api/auth/users/${params.id}`);
+    const [host, setHost] = useState<User>({id: '', name: '', avatar: ''});
+
+    const getHost = async () => {
+        const tmpHost = await apiService.get(`/api/auth/users/${params.id}`);
+
+        setHost(tmpHost);
+    }
+
+    useEffect(() => {
+        getHost();
+    }, [])
     
     return (
         <main className="max-w-[1500px] mx-auto px-6 pb-6">
