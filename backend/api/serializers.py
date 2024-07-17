@@ -99,7 +99,8 @@ class ReservationSerializer(serializers.ModelSerializer):
         date_out = validated_data.get('date_out')
         nights = (date_out - date_in).days
         property = validated_data.get('property')
-        total_price = property.price_per_night * nights
+        fee = ((property.price_per_night * nights) / 100) * 5
+        total_price = property.price_per_night * nights + fee
         reservation = Reservation.objects.create(
             nights=nights, total_price=total_price, **validated_data
         )
