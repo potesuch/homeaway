@@ -64,6 +64,8 @@ class CustomUserViewSet(UserViewSet):
         if conversation.count() == 0:
             conversation = Conversation.objects.create()
             conversation.users.add(request.user.id, user.id)
+        else:
+            conversation = conversation.first()
         return Response({'id': conversation.id}, status=200)
 
 
