@@ -138,3 +138,12 @@ class ConversationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Conversation
         fields = ('id', 'users', 'modified_at')
+
+
+class ConversationMessageSerializer(serializers.ModelSerializer):
+    sent_to = UserSerializer(read_only=True)
+    sent_from = UserSerializer(read_only=True)
+
+    class Meta:
+        model = ConversationMessage
+        fields = ('id', 'body', 'sent_to', 'sent_from', 'created_at')

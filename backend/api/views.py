@@ -5,7 +5,8 @@ from djoser.views import UserViewSet
 
 from .serializers import (PropertyListSerializer, PropertySerializer,
                           CategorySerializer, ReservationListSerializer,
-                          ReservationSerializer, ConversationSerializer)
+                          ReservationSerializer, ConversationSerializer,
+                          ConversationMessageSerializer)
 from .permissions import IsAuthorOrStuffOrReadOnly
 from .filters import PropertyFilter
 from properties.models import Property, Category, Favorite
@@ -41,25 +42,6 @@ class CustomUserViewSet(UserViewSet):
     def conversation_list(self, request):
         conversations = request.user.conversations.all()
         serializer = ConversationSerializer(conversations, many=True)
-        return Response(serializer.data, status=200)
-
-    @action(
-        methods=['GET'],
-        detail=False,
-        permission_classes=(permissions.IsAuthenticated,),
-        url_path=(
-            r'me/conversations/'
-            r'(?P<pk>[0-9a-fA-F]{8}-'
-            r'[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-'
-            r'[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})'
-        )
-    )
-    def conversation_detail(self, request, *args, **kwargs):
-        try:
-            conversation = request.user.conversations.get(id=kwargs.get('pk'))
-        except Conversation.DoesNotExist:
-            exceptions.NotFound
-        serializer = ConversationSerializer(conversation)
         return Response(serializer.data, status=200)
 
 
@@ -139,3 +121,21 @@ class CategoryViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
     permission_classes = (permissions.AllowAny,)
+
+
+class ConversationViewSet(viewsets.ViewSet):
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def retrieve(self, request, pk=None):
+        try:
+            conversation = request.user.conversations.get(id=pk)
+        except Conversation.DoesNotExist:
+            raise exceptions.NotFound
+        conversation_serializer = ConversationSerializer(conversation)
+        messages_serializer = ConversationMessageSerializer(
+            conversation.messages.all(), many=True
+        )
+        return Response({
+            **conversation_serializer.data,
+            'messages': messages_serializer.data
+        }, status=200)

@@ -32,7 +32,7 @@ class ConversationMessage(models.Model):
         body (TextField): Текст сообщения.
         sent_to (ForeignKey): Пользователь, которому отправлено сообщение.
         sent_from (ForeignKey): Пользователь, отправивший сообщение.
-        create_at (DateTimeField): Время отправки сообщения.
+        created_at (DateTimeField): Время отправки сообщения.
     """
     id = models.UUIDField(primary_key=True, default=uuid.uuid4)
     conversation = models.ForeignKey(
@@ -45,4 +45,4 @@ class ConversationMessage(models.Model):
     sent_from = models.ForeignKey(
         User, related_name='sent_messages', on_delete=models.CASCADE
     )
-    create_at = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(auto_now_add=True)
