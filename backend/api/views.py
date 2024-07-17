@@ -1,3 +1,4 @@
+from django.contrib.auth import get_user_model
 from rest_framework import viewsets, permissions, exceptions
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -11,6 +12,8 @@ from .permissions import IsAuthorOrStuffOrReadOnly
 from .filters import PropertyFilter
 from properties.models import Property, Category, Favorite
 from chat.models import Conversation
+
+User = get_user_model()
 
 
 class CustomUserViewSet(UserViewSet):
@@ -44,6 +47,22 @@ class CustomUserViewSet(UserViewSet):
         serializer = ConversationSerializer(conversations, many=True)
         return Response(serializer.data, status=200)
 
+    @action(
+        methods=['POST'],
+        detail=True,
+        permission_classes=(permissions.IsAuthenticated,),
+        url_path='start_conversation'
+    )
+    def conversation_create(self, request, id=None):
+        try:
+            user = User.objects.get(pk=id)
+        except User.DoesNotExist:
+            raise exceptions.NotFound
+        conversation, created = Conversation.objects.get_or_create()
+        if created:
+            conversation.users.add(request.user.id, user.id)
+        return Response({'conversation_id': conversation.id}, status=200)
+
 
 class PropertyViewSet(viewsets.ModelViewSet):
     queryset = Property.objects.prefetch_related('in_favorite')
@@ -65,9 +84,9 @@ class PropertyViewSet(viewsets.ModelViewSet):
         permission_classes=(permissions.IsAuthenticated,),
         url_path='book'
     )
-    def book_property(self, request, *args, **kwargs):
+    def book_property(self, request, pk=None):
         try:
-            property = Property.objects.get(id=kwargs.get('pk'))
+            property = Property.objects.get(pk=pk)
         except Property.DoesNotExist:
             raise exceptions.NotFound
         user = request.user
@@ -88,9 +107,9 @@ class PropertyViewSet(viewsets.ModelViewSet):
         permission_classes=(permissions.AllowAny,),
         url_path='reservations'
     )
-    def property_reservations(self, request, *args, **kwargs):
+    def property_reservations(self, request, pk=None):
         try:
-            property = Property.objects.get(id=kwargs.get('pk'))
+            property = Property.objects.get(pk=pk)
         except Property.DoesNotExist:
             raise exceptions.NotFound
         reservations = property.reservations.all()
@@ -103,9 +122,9 @@ class PropertyViewSet(viewsets.ModelViewSet):
         detail=True,
         methods=['POST'],
     )
-    def toggle_favorite(self, request, *args, **kwargs):
+    def toggle_favorite(self, request, pk=None):
         try:
-            property = Property.objects.get(id=kwargs.get('pk'))
+            property = Property.objects.get(pk=pk)
         except Property.DoesNotExist:
             raise exceptions.NotFound
         favorite, created = Favorite.objects.get_or_create(
@@ -128,7 +147,7 @@ class ConversationViewSet(viewsets.ViewSet):
 
     def retrieve(self, request, pk=None):
         try:
-            conversation = request.user.conversations.get(id=pk)
+            conversation = request.user.conversations.get(pk=pk)
         except Conversation.DoesNotExist:
             raise exceptions.NotFound
         conversation_serializer = ConversationSerializer(conversation)
