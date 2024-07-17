@@ -132,7 +132,7 @@ class ReservationSerializer(serializers.ModelSerializer):
         return value
 
 
-class ConversationListSerializer(serializers.ModelSerializer):
+class ConversationSerializer(serializers.ModelSerializer):
     users = UserSerializer(many=True, read_only=True)
 
     class Meta:
