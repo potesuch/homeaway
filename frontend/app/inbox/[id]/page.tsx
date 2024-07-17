@@ -22,7 +22,7 @@ const ConversationPage = ({ params }: { params: {id: string}}) => {
     const [token, setToken] = useState<string | undefined>();
 
     const getConversation = async () => {
-        const tmpConversation = await apiService.get(`/api/auth/users/me/conversations/${params.id}/`);
+        const tmpConversation = await apiService.get(`/api/conversations/${params.id}/`);
 
         setConversation(tmpConversation);
     }

@@ -5,10 +5,12 @@ import { useEffect, useState } from "react";
 import Conversation from "../components/inbox/Conversation";
 import useUser, { User } from "../components/hooks/useUser";
 import apiService from "../services/apiService";
+import { MessageType } from "./[id]/page";
 
 export type ConversationType = {
     id: string;
     users: User[];
+    messages: MessageType[];
 }
 
 const InboxPage = () => {

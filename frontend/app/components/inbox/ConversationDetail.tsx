@@ -82,6 +82,17 @@ const ConversationDetail: React.FC<ConversationDetailProps> = ({
                 ref={messagesDiv}
                 className="max-h-[400px] overflow-auto flex flex-col space-y-4"
             >
+                {conversation.messages.map((message, index) => {
+                    return (
+                        <div
+                            key={index}
+                            className={`w-[80%] py-4 px-6 rounded-xl ${message.sent_from.name === myUser?.name ? 'ml-[20%] bg-blue-200' : 'bg-gray-200'}`}
+                        >
+                            <p className="font-bold text-gray-500">{message.sent_from.name}</p>
+                            <p>{message.body}</p>
+                        </div>
+                    )
+                })}
                 {realtimeMessages.map((message, index) => {
                     return (
                         <div
