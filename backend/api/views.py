@@ -61,7 +61,7 @@ class CustomUserViewSet(UserViewSet):
         conversation, created = Conversation.objects.get_or_create()
         if created:
             conversation.users.add(request.user.id, user.id)
-        return Response({'conversation_id': conversation.id}, status=200)
+        return Response({'id': conversation.id}, status=200)
 
 
 class PropertyViewSet(viewsets.ModelViewSet):
