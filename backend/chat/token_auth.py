@@ -13,11 +13,11 @@ def get_user(token_key):
         token = AccessToken(token_key)
         user_id = token.payload['user_id']
         return User.objects.get(id=user_id)
-    except Exception as e:
+    except:
         return AnonymousUser
-    
 
-class TokenAuthMiddleware(BaseException):
+
+class TokenAuthMiddleware(BaseMiddleware):
 
     def __init__(self, inner):
         self.inner = inner
