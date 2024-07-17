@@ -8,6 +8,7 @@ import DatePicker from '../forms/Calendar';
 import apiService from '@/app/services/apiService';
 import useUser from '../hooks/useUser';
 import useLoginModal from '../hooks/useLoginModal';
+import { useRouter } from 'next/navigation';
 
 const initialDateRange = {
     startDate: new Date(),
@@ -28,6 +29,7 @@ interface ReservationSideBarProps {
 const ReservationSideBar: React.FC<ReservationSideBarProps> = ({
     property
 }) => {
+    const router = useRouter();
     const { user } = useUser();
     const loginModal = useLoginModal();
     const [fee, setFee] = useState<number>(0);
@@ -50,6 +52,7 @@ const ReservationSideBar: React.FC<ReservationSideBarProps> = ({
 
                 if (response.id) {
                     console.log('SUCCESS', response);
+                    router.push('/myreservations');
                 } else {
                     console.log('ERROR', response);
                 }
