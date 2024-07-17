@@ -2,23 +2,30 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 
 import apiService from "../services/apiService";
+import useLoginModal from "./hooks/useLoginModal";
 
 interface ContactButtonProps {
+    userId: string;
     hostId: string;
 }
 
 const ContactButton: React.FC<ContactButtonProps> = ({
+    userId,
     hostId
 }) => {
     const router = useRouter();
-    const [conversation, setConversation] = useState();
+    const loginModal = useLoginModal();
 
     const startConversation = async () => {
-        const tmpConversation = await apiService.post(`/api/auth/users/${hostId}/start_conversation/`, {});
-
-        setConversation(tmpConversation);
-        console.log('CONVERSATION', tmpConversation)
-        router.push(`/inbox/${tmpConversation.id}/`)
+        if (userId) {
+            const conversation = await apiService.post(`/api/auth/users/${hostId}/start_conversation/`, {});
+            
+            if (conversation.id) {
+                router.push(`/inbox/${conversation.id}/`)
+            }
+        } else {
+            loginModal.open();
+        }
     }
     
     return (
