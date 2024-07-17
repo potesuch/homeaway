@@ -42,7 +42,7 @@ const InboxPage = () => {
                 return (
                     <Conversation
                         key={conversation.id}
-                        user={user}
+                        userId={user.id}
                         conversation={conversation}
                     />
                 )

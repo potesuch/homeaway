@@ -1,19 +1,18 @@
 import { useRouter } from "next/navigation";
 
-import { User } from "../hooks/useUser";
 import { ConversationType } from "@/app/inbox/page";
 
 interface ConversationProps {
-    user: User;
+    userId: string;
     conversation: ConversationType;
 }
 
 const Conversation: React.FC<ConversationProps> = ({
-    user,
+    userId,
     conversation
 }) => {
     const router = useRouter();
-    const otherUser = conversation.users.find((conv_user) => conv_user.id != user.id)
+    const otherUser = conversation.users.find((user) => user.id != userId)
     
     return (
         <div className="cursor-pointer px-6 py-4 border border-gray-300 rounded-xl">
