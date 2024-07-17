@@ -14,12 +14,12 @@ export type PropertyType = {
 };
 
 interface PropertyListProps {
-    host_id?: string;
+    hostId?: string;
     favorites?: boolean;
 }
 
 const PropertyList: React.FC<PropertyListProps> = ({
-    host_id,
+    hostId,
     favorites
 }) => {
     const [properties, setProperties] = useState<PropertyType[]>([]);
@@ -43,10 +43,11 @@ const PropertyList: React.FC<PropertyListProps> = ({
     }
 
     const getProperties = async () => {
+        console.log('HOST', hostId);
         let url = '/api/properties/';
     
-        if (host_id) {
-            url += `?host=${host_id}`;
+        if (hostId) {
+            url += `?host=${hostId}`;
         } else if (favorites) {
             url += `?is_favorite=true`;
         }
