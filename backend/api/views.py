@@ -58,8 +58,11 @@ class CustomUserViewSet(UserViewSet):
             user = User.objects.get(pk=id)
         except User.DoesNotExist:
             raise exceptions.NotFound
-        conversation, created = Conversation.objects.get_or_create()
-        if created:
+        conversation = Conversation.objects.filter(
+            users=request.user.id
+        ).filter(users=user.id)
+        if conversation.count() == 0:
+            conversation = Conversation.objects.create()
             conversation.users.add(request.user.id, user.id)
         return Response({'id': conversation.id}, status=200)
 
