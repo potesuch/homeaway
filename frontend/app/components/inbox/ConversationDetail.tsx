@@ -1,6 +1,7 @@
 'use client';
 
 import useWebSocket from "react-use-websocket";
+import { useEffect } from "react";
 
 import { ConversationType } from "@/app/inbox/page";
 import CustomButton from "../forms/CustomButton";
@@ -24,6 +25,10 @@ const ConversationDetail: React.FC<ConversationDetailProps> = ({
         share: false,
         shouldReconnect: () => true
     })
+
+    useEffect(() => {
+        console.log('Connection stage changed', readyState);
+    }, [readyState])
     
     return (
         <>

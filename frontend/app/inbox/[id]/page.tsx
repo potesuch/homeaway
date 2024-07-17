@@ -38,7 +38,7 @@ const ConversationPage = ({ params }: { params: {id: string}}) => {
         getToken();
     }, [])
 
-    if (!user) {
+    if (!user || !token) {
         return (
             <main className="max-w-[1500px] max-auto px-6 py-12">
                 <p>You need to be authenticated...</p>
@@ -48,7 +48,7 @@ const ConversationPage = ({ params }: { params: {id: string}}) => {
 
     return (
         <main className="max-w-[1500px] mx-auto px-6 pb-6 space-y-4">
-            {conversation && token &&
+            {conversation &&
                 <ConversationDetail
                     userId={user.id}
                     token={token}
