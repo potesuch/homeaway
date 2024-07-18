@@ -52,9 +52,6 @@ const ConversationDetail: React.FC<ConversationDetailProps> = ({
     }, [lastJsonMessage])
 
     useLayoutEffect(() => {
-        console.log('MESSAGE', realtimeMessages);
-        realtimeMessages.length && console.log('SENT_FROM', realtimeMessages[realtimeMessages.length]].sent_from.id);
-        console.log(userId);
         scrollToBottom();
     }, [realtimeMessages])
 
