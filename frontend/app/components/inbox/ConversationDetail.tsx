@@ -60,7 +60,8 @@ const ConversationDetail: React.FC<ConversationDetailProps> = ({
             event: 'chat_message',
             data: {
                 body: newMessage,
-                name: myUser?.name,
+                user_id: myUser?.id,
+                user_name: myUser?.name,
                 sent_to_id: otherUser?.id,
                 conversation_id: conversation.id
             }
