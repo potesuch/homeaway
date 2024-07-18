@@ -116,7 +116,7 @@ class ReservationSerializer(serializers.ModelSerializer):
         reservations = Reservation.objects.filter(property=property.id)
         for reservation in reservations:
             if (
-                date_in <= reservation.date_out
+                date_in < reservation.date_out
                 and date_out > reservation.date_in
             ):
                 raise serializers.ValidationError(
