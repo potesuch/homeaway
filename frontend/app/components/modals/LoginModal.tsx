@@ -28,9 +28,13 @@ const LoginModal = () => {
         const response = await apiService.post('/api/auth/jwt/create/', JSON.stringify(formData), 'application/json');
 
         if (response.access) {
-            handleLogin(response.access, response.refresh);
+            await handleLogin(response.access, response.refresh);
+
+            const tmpUser = await apiService.get('/api/auth/users/me/');
+            user.setUser(tmpUser);
 
             loginModal.close();
+            router.refresh();
             router.push('/?refresh=login');
         } else {
             if (response.detail) {

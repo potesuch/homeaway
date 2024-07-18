@@ -12,9 +12,10 @@ const LogoutButton = () => {
     const router = useRouter();
 
     const submitLogout = async () => {
-        resetAuthCookies();
+        await resetAuthCookies();
 
         user.clearUser();
+        router.refresh();
         router.push('/?refresh=logout');
     }
     

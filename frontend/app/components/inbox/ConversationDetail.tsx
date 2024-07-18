@@ -1,7 +1,7 @@
 'use client';
 
 import useWebSocket from "react-use-websocket";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useLayoutEffect } from "react";
 
 import { ConversationType } from "@/app/inbox/page";
 import CustomButton from "../forms/CustomButton";
@@ -19,7 +19,7 @@ const ConversationDetail: React.FC<ConversationDetailProps> = ({
     token,
     conversation
 }) => {
-    const messagesDiv = useRef(null);
+    const messagesDiv = useRef<HTMLDivElement | null>(null);
     const [newMessage, setNewMessage] = useState('');
     const [realtimeMessages, setRealtimeMessages] = useState<MessageType[]>([]);
     const myUser = conversation.users.find((user) => user.id == userId)
@@ -35,10 +35,11 @@ const ConversationDetail: React.FC<ConversationDetailProps> = ({
     }, [readyState])
 
     useEffect(() => {
-        if (lastJsonMessage && typeof lastJsonMessage === 'object' && 'name' in lastJsonMessage && 'body' in lastJsonMessage) {
+        if (lastJsonMessage && typeof lastJsonMessage === 'object' && 'user_id' in lastJsonMessage && 'user_name' in lastJsonMessage && 'body' in lastJsonMessage) {
             const message: MessageType = {
                 id: '',
-                name: lastJsonMessage.name as string,
+                user_id: lastJsonMessage.user_id as string,
+                user_name: lastJsonMessage.user_name as string,
                 body: lastJsonMessage.body as string,
                 sent_to: otherUser as User,
                 sent_from: myUser as User,
@@ -48,9 +49,14 @@ const ConversationDetail: React.FC<ConversationDetailProps> = ({
             setRealtimeMessages((realtimeMessages) => [...realtimeMessages, message]);
         }
         
-        scrollToBottom();
     }, [lastJsonMessage])
 
+    useLayoutEffect(() => {
+        console.log('MESSAGE', realtimeMessages);
+        realtimeMessages.length && console.log('SENT_FROM', realtimeMessages[realtimeMessages.length]].sent_from.id);
+        console.log(userId);
+        scrollToBottom();
+    }, [realtimeMessages])
 
     const sendMessage = async () => {
         sendJsonMessage({
@@ -64,10 +70,6 @@ const ConversationDetail: React.FC<ConversationDetailProps> = ({
         });
 
         setNewMessage('');
-
-        setTimeout(() => {
-            scrollToBottom();
-        }, 50)
     }
     
     const scrollToBottom = () => {
@@ -97,9 +99,9 @@ const ConversationDetail: React.FC<ConversationDetailProps> = ({
                     return (
                         <div
                             key={index}
-                            className={`w-[80%] py-4 px-6 rounded-xl ${message.sent_from.id === myUser?.id ? 'ml-[20%] bg-blue-200' : 'bg-gray-200'}`}
+                            className={`w-[80%] py-4 px-6 rounded-xl ${message.user_id === myUser?.id ? 'ml-[20%] bg-blue-200' : 'bg-gray-200'}`}
                         >
-                            <p className="font-bold text-gray-500">{message.name}</p>
+                            <p className="font-bold text-gray-500">{message.user_name}</p>
                             <p>{message.body}</p>
                         </div>
                     )

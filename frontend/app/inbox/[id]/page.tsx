@@ -9,7 +9,8 @@ import { getAccessToken } from "@/app/lib/actions";
 
 export type MessageType = {
     id: string;
-    name: string;
+    user_id: string;
+    user_name: string;
     body: string;
     conversationId: string;
     sent_to: User;
