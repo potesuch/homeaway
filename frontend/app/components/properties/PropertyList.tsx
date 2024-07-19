@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import format from "date-fns/format";
 
 import PropertyListItem from "./PropertyListItem";
@@ -24,6 +25,7 @@ const PropertyList: React.FC<PropertyListProps> = ({
     hostId,
     favorites
 }) => {
+    const params = useSearchParams();
     const searchModal = useSearchModal();
     const country = searchModal.query.country
     const checkIn = searchModal.query.checkIn
@@ -97,7 +99,7 @@ const PropertyList: React.FC<PropertyListProps> = ({
     
     useEffect(() => {
         getProperties();
-    }, [searchModal.query]);
+    }, [searchModal.query, params]);
     
     return (
         <>

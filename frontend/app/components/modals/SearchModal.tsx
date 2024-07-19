@@ -32,7 +32,7 @@ const SearchModal = () => {
             guests: parseInt(guests),
             bedrooms: parseInt(bedrooms),
             bathrooms: parseInt(bathrooms),
-            category: ''
+            category: searchModal.query.category
         }
 
         searchModal.setQuery(newSearchQuery);

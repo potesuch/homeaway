@@ -16,7 +16,7 @@ export type ReservationType = {
 
 const ReservationList = () => {
     const router = useRouter();
-    const [reservations, setReservations ] = useState<ReservationType[]>();
+    const [reservations, setReservations ] = useState<ReservationType[]>([]);
 
     const getReservations = async () => {
         const tmpReservations = await apiService.get('/api/auth/users/me/reservations/');
@@ -30,7 +30,7 @@ const ReservationList = () => {
     
     return (
         <div className="space-y-4">
-        {reservations?.map((reservation) => {
+        {reservations.map((reservation) => {
             return (
                 <div
                     key={reservation.id}

@@ -70,7 +70,7 @@ const AddPropertyModal = () => {
             if (response.id) {
                 console.log('SUCCESS');
 
-                router.push('/');
+                router.push('/?refresh=property');
                 addPropertyModal.close();
             } else {
                 console.log('NOT SUCCESS');

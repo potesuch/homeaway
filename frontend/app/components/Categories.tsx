@@ -10,7 +10,7 @@ import useSearchModal, { SearchQuery } from "./hooks/useSearchModal";
 const Categories = () => {
     const searchModal = useSearchModal();
     const [categories, setCategories] = useState<CategoryType[]>([]);
-    const [categoryName, setCategoryName] = useState<string>();
+    const [categoryName, setCategoryName] = useState<string>('');
 
     const getCategories = async () => {
         const tmpCategories = await apiService.get('/api/categories/');
@@ -39,6 +39,18 @@ const Categories = () => {
     
     return (
         <div className="cursor-pointer pt-3 pb-6 flex items-center space-x-12">
+            <div
+                onClick={() => _setCategory('')}
+                className={`pb-2 flex flex-col items-center space-y-2 border-b-2 ${categoryName === '' ? 'border-gray-800' : 'border-white'} opacity-60 hover:opacity-100 hover:border-gray-200`}
+            >
+                <Image 
+                    src='/category_all.svg'
+                    alt={`Category - all`}
+                    width={25}
+                    height={25}
+                />
+                <span className="text-sm">All</span>
+            </div>
             {categories.map((category, index) => {
                 return (
                     <div

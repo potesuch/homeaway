@@ -13,7 +13,7 @@ const MyPropertiesPage = () => {
             <div className="mt-4 grid grid-cols-1 md:grid-cols-3 gap-6">
                 {user && (
                     <PropertyList
-                        host_id={user.id}
+                        hostId={user.id}
                     />
                 )}
             </div>
