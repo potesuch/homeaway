@@ -1,3 +1,4 @@
+from typing import Iterable
 import uuid
 
 from django.contrib.auth.models import (AbstractBaseUser, PermissionsMixin,
@@ -90,7 +91,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     """
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     email = models.EmailField(unique=True)
-    name = models.CharField(max_length=255, blank=True, null=True)
+    name = models.CharField(max_length=255, blank=True)
     avatar = models.ImageField(upload_to='uploads/avatars')
     is_active = models.BooleanField(default=True)
     is_superuser = models.BooleanField(default=False)
@@ -101,3 +102,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     USERNAME_FIELD = 'email'
     EMAIL_FIELD = 'email'
     REQUIRED_FIELDS = ['name',]
+
+    def save(self, *args, **kwargs):
+        if not self.name:
+            self.name = f'User_{self.id}'
+        super().save(*args, **kwargs)
