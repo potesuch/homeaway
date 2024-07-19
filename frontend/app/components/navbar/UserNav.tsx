@@ -36,6 +36,14 @@ const UserNav = () => {
                     {user ? (
                         <>
                             <MenuLink
+                                label='Profile'
+                                onClick={() => {
+                                    setIsOpen(false);
+                                    router.push('/profile');
+                                }}
+                            />
+                            
+                            <MenuLink
                                 label='Inbox'
                                 onClick={() => {
                                     setIsOpen(false);

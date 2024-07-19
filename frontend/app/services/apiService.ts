@@ -61,6 +61,39 @@ const apiService = {
                     reject(error);
                 })
         })
+    },
+    patch: async function(url: string, data:any, contentType: string = ''): Promise<any> {
+        console.log('patch', url, data);
+        const token = await getAccessToken();
+
+        return new Promise((resolve, reject) => { 
+            const headers: { [key: string]: string } = {
+                'Accept': 'application/json'
+            }
+
+            if (token) {
+                headers['Authorization'] = `Bearer ${token}`;
+            }
+
+            if (contentType) {
+                headers['Content-type'] = contentType;
+            }
+
+            fetch(`${process.env.NEXT_PUBLIC_API_HOST}${url}`, {
+                method: 'PATCH',
+                headers: headers,
+                body: data
+            })
+                .then(response => response.json())
+                .then((json) => {
+                    console.log('Response:', json);
+
+                    resolve(json);
+                })
+                .catch((error) => {
+                    reject(error);
+                })
+        })
     }
 }
 
