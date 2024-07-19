@@ -157,7 +157,7 @@ const ProfilePage = () => {
                     return (
                         <div
                             key={`error_${index}`}
-                            className="p-5 bg-helio-dark rounded-xl text-white opacity-80"
+                            className="w-full p-5 bg-helio-dark rounded-xl text-white opacity-80"
                         >
                             {error}
                         </div>
