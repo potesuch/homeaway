@@ -1,14 +1,16 @@
 from django.db.models import Q
 from django_filters import rest_framework as filters
 
-from properties.models import Property
+from properties.models import Property, Category
 
 
 class PropertyFilter(filters.FilterSet):
     is_favorite = filters.BooleanFilter(method='is_favorite_filter')
     check_in = filters.DateFilter(method='reservation_filter')
     check_out = filters.DateFilter(method='reservation_filter')
-    category = filters.AllValuesFilter(field_name='category__name')
+    category = filters.ModelChoiceFilter(
+        queryset=Category.objects.all(), to_field_name='name'
+    )
     guests = filters.NumberFilter(field_name='guests', lookup_expr='gte')
     bedrooms = filters.NumberFilter(field_name='bedrooms', lookup_expr='gte')
     bathrooms = filters.NumberFilter(field_name='bathrooms', lookup_expr='gte')
