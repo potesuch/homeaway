@@ -36,7 +36,7 @@ const HostDetailPage = ({params}: {params: {id: string}}) => {
                         />
 
                         <h1 className="mt-6 text-2xl">{host.name}</h1>
-                        {host.id &&
+                        {user && host.id &&
                             <ContactButton
                                 userId={user?.id}
                                 hostId={host.id}
