@@ -9,7 +9,7 @@ import apiService from "../services/apiService";
 import { useRouter } from "next/navigation";
 
 const ProfilePage = () => {
-    const { user } = useUser();
+    const { user, setUser } = useUser();
     const router = useRouter();
     const [name, setName] = useState('');
     const [avatar, setAvatar] = useState<string>();
@@ -59,7 +59,11 @@ const ProfilePage = () => {
         const response = await apiService.patch('/api/auth/users/me/', formData);
         if (response.id) {
             setSuccess(true);
-            router.push('/profile?=refresh');
+
+            const tmpUser = await apiService.get('/api/auth/users/me/');
+            setUser(tmpUser);
+            
+            router.push('/profile');
         } else {
             setSuccess(false);
             const tmpErrors: string[] = Object.values(response);
@@ -103,7 +107,7 @@ const ProfilePage = () => {
                     <p className="text-2xl">Success</p>
                 </div>
             }
-            <div className="w-[60%] md:w-[50%] lg:w-[700px] mx-auto px-6">
+            <div className="w-[90%] md:w-[80%] lg:w-[700px] mx-auto px-6">
                 <div className="flex items-center flex-col space-y-4 mb-7">
                     <div className="cursor-pointer relative w-[150px] h-[150px] border rounded-full group overflow-hidden">
                         <input
