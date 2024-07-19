@@ -11,10 +11,58 @@ User = get_user_model()
 
 
 class CustomUserSerializer(UserSerializer):
+    current_password = serializers.CharField(write_only=True, required=False)
+    new_password = serializers.CharField(write_only=True, required=False)
+    re_new_password = serializers.CharField(write_only=True, required=False)
 
     class Meta:
         model = User
-        fields = ('id', 'name', 'avatar')
+        fields = (
+            'id',
+            'name',
+            'avatar',
+            'current_password',
+            'new_password',
+            're_new_password'
+        )
+
+    def validate(self, attrs):
+        user = self.instance
+        current_password = attrs.get('current_password')
+        new_password = attrs.get('new_password')
+        re_new_password = attrs.get('re_new_password')
+        if current_password or new_password or re_new_password:
+            if not current_password:
+                raise serializers.ValidationError(
+                    {"current_password": "This field is required."}
+                )
+            if not user.check_password(current_password):
+                raise serializers.ValidationError(
+                    {"current_password": "Current password is incorrect."}
+                )
+            if not new_password:
+                raise serializers.ValidationError(
+                    {"new_password": "This field is required."}
+                )
+            if not re_new_password:
+                raise serializers.ValidationError(
+                    {"re_new_password": "This field is required."}
+                )
+            if new_password != re_new_password:
+                raise serializers.ValidationError(
+                    {"re_new_password": "New passwords do not match."}
+                )
+        return super().validate(attrs)
+
+    def update(self, instance, validated_data):
+        validated_data.pop('current_password')
+        new_password = validated_data.pop('new_password')
+        re_new_password = validated_data.pop('re_new_password')
+        instance = super().update(instance, validated_data)
+        if new_password and re_new_password:
+            instance.set_password(new_password)
+            instance.save()
+        return instance
 
 
 class CategorySerializer(serializers.ModelSerializer):
