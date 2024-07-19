@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Range } from "react-date-range";
 
 import useLoginModal from "../hooks/useLoginModal";
-import useSearchModal from "../hooks/useSearchModal";
+import useSearchModal, { SearchQuery } from "../hooks/useSearchModal";
 import Modal from "./Modal";
 import SelectCountry, { SelectCountryValue } from "../forms/SelectCountry";
 import CustomButton from "../forms/CustomButton";
@@ -25,6 +25,17 @@ const SearchModal = () => {
     const [bathrooms, setBathrooms] = useState('0');
 
     const closeAndSearch = () => {
+        const newSearchQuery: SearchQuery = {
+            country: country?.label,
+            checkIn: dateRange.startDate,
+            checkOut: dateRange.endDate,
+            guests: parseInt(guests),
+            bedrooms: parseInt(bedrooms),
+            bathrooms: parseInt(bathrooms),
+            category: ''
+        }
+
+        searchModal.setQuery(newSearchQuery);
         searchModal.close();
     }
 
