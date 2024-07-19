@@ -1,6 +1,8 @@
 from datetime import datetime as dt
 
 from django.contrib.auth import get_user_model
+from django.contrib.auth.password_validation import validate_password
+from django.core.exceptions import ValidationError
 from rest_framework import serializers
 from djoser.serializers import UserSerializer
 
@@ -21,6 +23,7 @@ class CustomUserSerializer(UserSerializer):
             'id',
             'name',
             'avatar',
+            'email',
             'current_password',
             'new_password',
             're_new_password'
@@ -54,12 +57,24 @@ class CustomUserSerializer(UserSerializer):
                 )
         return super().validate(attrs)
 
+    def validate_new_password(self, value):
+        try:
+            validate_password(value)
+        except ValidationError as e:
+            raise serializers.ValidationError(e.messages)
+        return value
+
     def update(self, instance, validated_data):
-        validated_data.pop('current_password')
-        new_password = validated_data.pop('new_password')
-        re_new_password = validated_data.pop('re_new_password')
+        new_password = None
+        re_new_password = None
+        if 'current_password' in validated_data:
+            validated_data.pop('current_password')
+        if 'new_password' in validated_data:
+            new_password = validated_data.pop('new_password')
+        if 're_new_password' in validated_data:
+            re_new_password = validated_data.pop('re_new_password')
         instance = super().update(instance, validated_data)
-        if new_password and re_new_password:
+        if new_password is not None and re_new_password is not None:
             instance.set_password(new_password)
             instance.save()
         return instance
