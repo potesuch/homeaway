@@ -6,15 +6,23 @@ import { ChangeEvent, useState } from "react";
 import useUser from "../components/hooks/useUser";
 import CustomButton from "../components/forms/CustomButton";
 import apiService from "../services/apiService";
+import { useRouter } from "next/navigation";
 
 const ProfilePage = () => {
     const { user } = useUser();
+    const router = useRouter();
     const [name, setName] = useState('');
     const [avatar, setAvatar] = useState(user?.avatar);
     const [dataAvatar, setDataAvatar] = useState<File>();
     const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
     const [password1, setPassword1] = useState('');
     const [password2, setPassword2] = useState('');
+    const [emailBorder, setEmailBorder] = useState('border-gray-300');
+    const [passwordBorder, setPasswordBorder] = useState('border-gray-300');
+    const [password1Border, setPassword1Border] = useState('border-gray-300');
+    const [password2Border, setPassword2Border] = useState('border-gray-300');
+    const [errors, setErrors] = useState<string[]>([]);
 
     const _setAvatar = (event: ChangeEvent<HTMLInputElement>) => {
         if (event.target.files && event.target.files.length > 0){
@@ -37,15 +45,41 @@ const ProfilePage = () => {
         if (email) {
             formData.append('email', email);
         }
+        if (password) {
+            formData.append('current_password', password);
+        }
         if (password1) {
-            formData.append('password', password1);
+            formData.append('new_password', password1);
         }
         if (password2) {
-            formData.append('re_password', password2);
+            formData.append('re_new_password', password2);
         }
 
         const response = await apiService.patch('/api/auth/users/me/', formData);
-        console.log(response);
+        if (response.id) {
+            alert('SUCCESS');
+            router.push('/profile?=refresh');
+        } else {
+            const tmpErrors: string[] = Object.values(response);
+
+            setErrors(tmpErrors);
+            setEmailBorder('border-gray-300');
+            setPasswordBorder('border-gray-300');
+            setPassword1Border('border-gray-300');
+            setPassword2Border('border-gray-300');
+            if (response.email) {
+                setEmailBorder('border-helio-dark');
+            }
+            if (response.current_password) {
+                setPasswordBorder('border-helio-dark');
+            }
+            if (response.new_password) {
+                setPassword1Border('border-helio-dark');
+            }
+            if (response.re_new_password) {
+                setPassword2Border('border-helio-dark');
+            }
+        }
     }
 
     if (!user) {
@@ -83,7 +117,7 @@ const ProfilePage = () => {
                         onChange={(e) => {setName(e.target.value)}}
                         value={name}
                         placeholder="Your new name..."
-                        className="w-full h-[54px] px-4 border border-gray-300 rounded-xl"
+                        className={`w-full h-[54px] px-4 border ${emailBorder} rounded-xl`}
                     />
                 </div>
 
@@ -100,18 +134,35 @@ const ProfilePage = () => {
                 <div className="w-full space-y-4">
                     <label>Change password:</label>
                     <input
+                        onChange={(e) => {setPassword(e.target.value)}}
+                        value={password}
+                        placeholder="Your current password..."
+                        className={`w-full h-[54px] px-4 border ${passwordBorder} rounded-xl`}
+                    />
+                    <input
                         onChange={(e) => {setPassword1(e.target.value)}}
                         value={password1}
                         placeholder="Your new password..."
-                        className="w-full h-[54px] px-4 border border-gray-300 rounded-xl"
+                        className={`w-full h-[54px] px-4 border ${password1Border} rounded-xl`}
                     />
                     <input
                         onChange={(e) => {setPassword2(e.target.value)}}
                         value={password2}
                         placeholder="Repeat new password..."
-                        className="w-full h-[54px] px-4 border border-gray-300 rounded-xl"
+                        className={`w-full h-[54px] px-4 border ${password2Border} rounded-xl`}
                     />
                 </div>
+
+                {errors.map((error, index) => {
+                    return (
+                        <div
+                            key={`error_${index}`}
+                            className="p-5 bg-helio-dark rounded-xl text-white opacity-80"
+                        >
+                            {error}
+                        </div>
+                    )
+                })}
 
                 <CustomButton
                     label="Submit"
