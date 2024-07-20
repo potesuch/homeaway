@@ -1,0 +1,44 @@
+services:
+
+  frontend_homeaway:
+    build: ../frontend/
+    ports:
+      - "3000:3000"
+    env_file:
+      - ./.env
+  db_homeaway:
+    image: postgres:13.0-alpine
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data_homeaway:/var/lib/postgresql/data/
+    env_file:
+      - ./.env
+  backend_homeaway:
+    build: ../backend/
+    ports:
+      - "8000:8000"
+    volumes:
+      - static_value_homeaway:/app/static/
+      - media_value_homeaway:/app/media/
+    env_file:
+      - ./.env
+    depends_on:
+      - db_homeaway
+  nginxhomeaway:
+    image: nginx:1.19.3
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+      - ./frontend/.next/:/usr/share/nginx/html/
+      - static_value_homeaway:/var/html/static/
+      - media_value_homeaway:/var/html/media/
+    depends_on:
+      - backend_homeaway
+
+volumes:
+  static_value_homeaway:
+  media_value_homeaway:
+  postgres_data_homeaway:
+  
