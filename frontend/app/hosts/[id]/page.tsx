@@ -37,7 +37,8 @@ const HostDetailPage = ({params}: {params: {id: string}}) => {
                             className="rounded-full"
                         />
 
-                        <h1 className="mt-6 text-2xl">{host.name}</h1>
+                        <h1 className="mt-6 text-2xl text-center w-full break-words">{host.name}</h1>
+
                         {user && host.id &&
                             <ContactButton
                                 userId={user?.id}
