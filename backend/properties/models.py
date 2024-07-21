@@ -19,6 +19,9 @@ class Category(models.Model):
     name = models.CharField(max_length=20)
     image = models.ImageField(upload_to='uploads/categories')
 
+    class Meta:
+        verbose_name_plural = 'Categories'
+
     def __str__(self):
         return self.name
 
@@ -61,6 +64,9 @@ class Property(models.Model):
         User, related_name='properties', on_delete=models.CASCADE
     )
     created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name_plural = 'Properties'
 
 
 class Favorite(models.Model):
