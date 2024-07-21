@@ -7,6 +7,7 @@ import ReservationSideBar from "@/app/components/properties/ReservationSideBar";
 import apiService from "@/app/services/apiService";
 import Link from "next/link";
 import { PropertyType } from "@/app/components/properties/PropertyList";
+import imageLoader from "@/app/lib/image";
 
 const PropertyDetailPage = ({params}: {params: {id: string}}) => {
     const [property, setProperty] = useState<PropertyType>();
@@ -27,6 +28,7 @@ const PropertyDetailPage = ({params}: {params: {id: string}}) => {
                 <> 
                     <div className="relative mb-4 w-full h-[64vh] overflow-hidden rounded-xl">
                         <Image
+                            loader={imageLoader}
                             fill
                             src={property.image}
                             className="object-cover w-full h-full"
@@ -49,6 +51,7 @@ const PropertyDetailPage = ({params}: {params: {id: string}}) => {
                                 className="py-6 flex items-center space-x-4"
                             >
                                 <Image
+                                    loader={imageLoader}
                                     src={property.host.avatar ? property.host.avatar : '/profile_pic.png'}
                                     width={50}
                                     height={50}

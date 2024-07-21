@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { PropertyType } from "./PropertyList";
 import FavoriteButton from "../FavoriteButton";
 import useUser from "../hooks/useUser";
+import imageLoader from "@/app/lib/image";
 
 interface PropertyProps {
     property: PropertyType;
@@ -25,6 +26,7 @@ const PropertyListItem: React.FC<PropertyProps> = ({
             <div className="relative overflow-hidden aspect-square border rounded-xl">
                 <Image
                     fill
+                    loader={imageLoader}
                     src={property.image}
                     sizes="(max-width: 768px): 768px, (max-width: 1200px): 768px, 768px"
                     className="hover:scale-110 object-cover transition h-full w-full"

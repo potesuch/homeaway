@@ -7,6 +7,7 @@ import ContactButton from "@/app/components/ContactButton";
 import PropertyList from "@/app/components/properties/PropertyList";
 import apiService from "@/app/services/apiService";
 import useUser, { User } from "@/app/components/hooks/useUser";
+import imageLoader from "@/app/lib/image";
 
 const HostDetailPage = ({params}: {params: {id: string}}) => {
     const { user } = useUser();
@@ -28,6 +29,7 @@ const HostDetailPage = ({params}: {params: {id: string}}) => {
                 <aside className="col-span-1 mb-4">
                     <div className="flex flex-col items-center p-6 rounded-xl border border-gray-300 shadow-xl">
                         <Image
+                            loader={imageLoader}
                             src={host.avatar ? host.avatar: '/profile_pic.png'}
                             width={200}
                             height={200}

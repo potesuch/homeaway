@@ -7,6 +7,7 @@ import useUser from "../components/hooks/useUser";
 import CustomButton from "../components/forms/CustomButton";
 import apiService from "../services/apiService";
 import { useRouter } from "next/navigation";
+import imageLoader from "../lib/image";
 
 const ProfilePage = () => {
     const { user, setUser } = useUser();
@@ -117,6 +118,7 @@ const ProfilePage = () => {
                             onChange={_setAvatar}
                         />
                         <Image 
+                            loader={imageLoader}
                             fill
                             src={avatar || '/profile_pic.png'}
                             className="rounded-full mb-7 group-hover:scale-110 transition duration-200 object-cover"

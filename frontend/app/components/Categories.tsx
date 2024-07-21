@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { CategoryType } from "./addproperty/Categories";
 import apiService from "../services/apiService";
 import useSearchModal, { SearchQuery } from "./hooks/useSearchModal";
+import imageLoader from "../lib/image";
 
 const Categories = () => {
     const searchModal = useSearchModal();
@@ -59,6 +60,7 @@ const Categories = () => {
                         className={`pb-2 flex flex-col items-center space-y-2 border-b-2 ${category.name == categoryName ? 'border-gray-800' : 'border-white hover:opacity-100 hover:border-gray-200'} opacity-60`}
                     >
                         <Image 
+                            loader={imageLoader}
                             src={category.image}
                             alt={`Category - ${category.name}`}
                             width={25}

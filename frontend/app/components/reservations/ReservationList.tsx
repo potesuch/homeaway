@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import apiService from "@/app/services/apiService";
 import Image from "next/image";
 import { PropertyType } from "../properties/PropertyList";
+import imageLoader from "@/app/lib/image";
 
 export type ReservationType = {
     id: string;
@@ -39,6 +40,7 @@ const ReservationList = () => {
                     <div className="col-span-1">
                         <div className="relative overflow-hidden aspect-square rounded-xl">
                             <Image
+                                loader={imageLoader}
                                 fill
                                 src={reservation.property.image}
                                 className="hover:scale-110 object-cover transition h-full w-full"

@@ -62,6 +62,27 @@ git clone https://github.com/potesuch/homeaway.git
 cd homeaway
 ```
 
+### Настройка конфигурации
+Создайте файл **.env** в папке **infra** и заполните его данными:
+
+``` plaintext
+django_secret=<секретный ключ DJANGO>
+db_name=<имя БД>
+db_host=<хост БД>
+db_port=<порт БД>
+postgres_user=<имя пользователя для Postgres>
+postgres_password=<пароль для Postgres>
+redis_host=<хост Redis>
+redis_port=<порт Redis>
+```
+
+Создайте файл **.env.local** в папке **frontend** и заполните его данными:
+``` plaintext
+next_public_api_host=<хост API>
+next_public_ws_host=<хост WEBSOCKET>
+next_public_docker_api_host=<внутренний хост API>
+```
+
 ### Сборка и запуск контейнеров
 
 Перейдите в папку infra и запустите Docker Compose:

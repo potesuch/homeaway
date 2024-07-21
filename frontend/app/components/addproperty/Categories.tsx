@@ -2,6 +2,7 @@ import Image from "next/image";
 import { useState, useEffect } from "react";
 
 import apiService from "@/app/services/apiService";
+import imageLoader from "@/app/lib/image";
 
 interface CategoriesProps {
     dataCategory: string;
@@ -41,6 +42,7 @@ const Categories: React.FC<CategoriesProps> = ({
                             className={`pb-2 flex flex-col items-center space-y-2 border-b-2 ${dataCategory == category.id ? 'border-gray-800' : 'border-white hover:opacity-100 hover:border-gray-200'} opacity-60`}
                         >
                             <Image 
+                                loader={imageLoader}
                                 src={category.image}
                                 alt={`Category - ${category.name}`}
                                 width={25}
