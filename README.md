@@ -97,5 +97,5 @@ docker compose up -d --build
 Создайте суперпользователя для доступа к административной панели:
 
 ``` sh
-docker compose exec backendfoodgram python manage.py createsuperuser
+docker compose exec backendhomeaway python manage.py createsuperuser
 ```
