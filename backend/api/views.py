@@ -17,6 +17,9 @@ User = get_user_model()
 
 
 class CustomUserViewSet(UserViewSet):
+    """
+    Представления для пользователей.
+    """
 
     def get_permissions(self):
         if self.action == 'me':
@@ -70,6 +73,9 @@ class CustomUserViewSet(UserViewSet):
 
 
 class PropertyViewSet(viewsets.ModelViewSet):
+    """
+    Представление для объектов недвижимости.
+    """
     queryset = Property.objects.prefetch_related('in_favorite')
     serializer_class = PropertySerializer
     permission_classes = (IsAuthorOrStuffOrReadOnly,)
@@ -142,12 +148,18 @@ class PropertyViewSet(viewsets.ModelViewSet):
 
 
 class CategoryViewSet(viewsets.ReadOnlyModelViewSet):
+    """
+    Представление для категорий.
+    """
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
     permission_classes = (permissions.AllowAny,)
 
 
 class ConversationViewSet(viewsets.ViewSet):
+    """
+    Представление для диалогов.
+    """
     permission_classes = (permissions.IsAuthenticated,)
 
     def retrieve(self, request, pk=None):

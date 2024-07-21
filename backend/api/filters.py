@@ -5,6 +5,10 @@ from properties.models import Property, Category
 
 
 class PropertyFilter(filters.FilterSet):
+    """
+    Фильтр для объуктов недвижимости, позволяющий фильтровать по избранным объектам,
+    дате заезда и выезда, категории, количествам гостей, спален и ванных комнат.
+    """
     is_favorite = filters.BooleanFilter(method='is_favorite_filter')
     check_in = filters.DateFilter(method='reservation_filter')
     check_out = filters.DateFilter(method='reservation_filter')
@@ -29,11 +33,17 @@ class PropertyFilter(filters.FilterSet):
         )
 
     def is_favorite_filter(self, queryset, name, value):
+        """
+        Фильтр для избранных объектов.
+        """
         if value and self.request.user.is_authenticated:
             return queryset.filter(in_favorite__user=self.request.user)
         return queryset
 
     def reservation_filter(self, queryset, name, value):
+        """
+        Фильтр для даты заезда и выезда.
+        """
         check_in = self.data.get('check_in')
         check_out = self.data.get('check_out')
 

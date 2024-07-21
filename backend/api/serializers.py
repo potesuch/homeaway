@@ -13,6 +13,9 @@ User = get_user_model()
 
 
 class CustomUserSerializer(UserSerializer):
+    """
+    Сериализатор для пользователя.
+    """
     current_password = serializers.CharField(write_only=True, required=False)
     new_password = serializers.CharField(write_only=True, required=False)
     re_new_password = serializers.CharField(write_only=True, required=False)
@@ -81,6 +84,9 @@ class CustomUserSerializer(UserSerializer):
 
 
 class CategorySerializer(serializers.ModelSerializer):
+    """
+    Сериализатор для категории.
+    """    
 
     class Meta:
         model = Category
@@ -88,6 +94,9 @@ class CategorySerializer(serializers.ModelSerializer):
 
 
 class PropertyListSerializer(serializers.ModelSerializer):
+    """
+    Сериализатор для списка объектов недвижимости.
+    """
     is_favorite = serializers.SerializerMethodField()
 
     class Meta:
@@ -103,6 +112,9 @@ class PropertyListSerializer(serializers.ModelSerializer):
 
 
 class PropertySerializer(PropertyListSerializer):
+    """
+    Сериализатор для объекта недвижимости.
+    """
     host = CustomUserSerializer(read_only=True)
     category = serializers.PrimaryKeyRelatedField(
         queryset=Category.objects.all(),
@@ -130,6 +142,9 @@ class PropertySerializer(PropertyListSerializer):
 
 
 class ReservationListSerializer(serializers.ModelSerializer):
+    """
+    Сериализатор для списка бронирований.
+    """
     property = PropertyListSerializer()
 
     class Meta:
@@ -141,6 +156,9 @@ class ReservationListSerializer(serializers.ModelSerializer):
 
 
 class ReservationSerializer(serializers.ModelSerializer):
+    """
+    Сериализатор для бронирования.
+    """
 
     class Meta:
         model = Reservation
@@ -197,6 +215,9 @@ class ReservationSerializer(serializers.ModelSerializer):
 
 
 class ConversationSerializer(serializers.ModelSerializer):
+    """
+    Сериализатор для диалога.
+    """
     users = UserSerializer(many=True, read_only=True)
 
     class Meta:
@@ -205,6 +226,9 @@ class ConversationSerializer(serializers.ModelSerializer):
 
 
 class ConversationMessageSerializer(serializers.ModelSerializer):
+    """
+    Сериализатор для сообщения в диалоге.
+    """
     sent_to = UserSerializer(read_only=True)
     sent_from = UserSerializer(read_only=True)
 

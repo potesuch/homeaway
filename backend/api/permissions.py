@@ -2,6 +2,9 @@ from rest_framework import permissions
 
 
 class IsAuthorOrStuffOrReadOnly(permissions.BasePermission):
+    """
+    Кастомное разрешение, позволяющее доступ только автору, персоналу или для чтения.
+    """
 
     def has_permission(self, request, view):
         return (
