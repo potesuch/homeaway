@@ -22,8 +22,8 @@ const ConversationDetail: React.FC<ConversationDetailProps> = ({
     const messagesDiv = useRef<HTMLDivElement | null>(null);
     const [newMessage, setNewMessage] = useState('');
     const [realtimeMessages, setRealtimeMessages] = useState<MessageType[]>([]);
-    const myUser = conversation.users.find((user) => user.id == userId)
-    const otherUser = conversation.users.find((user) => user.id != userId)
+    const myUser = conversation.users.find((user) => user.id == userId);
+    const otherUser = conversation.users.find((user) => user.id != userId) || myUser;
 
     const { sendJsonMessage, lastJsonMessage, readyState } = useWebSocket(`${process.env.NEXT_PUBLIC_WS_HOST}/ws/${conversation.id}/?token=${token}`, {
         share: false,
@@ -32,6 +32,7 @@ const ConversationDetail: React.FC<ConversationDetailProps> = ({
 
     useEffect(() => {
         console.log('Connection stage changed', readyState);
+        console.log(process.env.NEXT_PUBLIC_WS_HOST);
     }, [readyState])
 
     useEffect(() => {

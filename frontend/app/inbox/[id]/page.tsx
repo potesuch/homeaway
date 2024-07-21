@@ -25,7 +25,9 @@ const ConversationPage = ({ params }: { params: {id: string}}) => {
     const getConversation = async () => {
         const tmpConversation = await apiService.get(`/api/conversations/${params.id}/`);
 
-        setConversation(tmpConversation);
+        if (tmpConversation.id) {
+            setConversation(tmpConversation);
+        }
     }
 
     const getToken = async () => {

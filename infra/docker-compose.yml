@@ -14,10 +14,17 @@ services:
       - postgres_data_homeaway:/var/lib/postgresql/data/
     env_file:
       - ./.env
-  backend_homeaway:
+  redis_homeaway:
+    image: redis:7.2.4-alpine
+    ports:
+      - "6380:6379"
+    volumes:
+      - redis_storage_homeaway:/var/lib/redis/data/
+  backendhomeaway:
     build: ../backend/
     ports:
       - "8000:8000"
+      - "8001:8001"
     volumes:
       - static_value_homeaway:/app/static/
       - media_value_homeaway:/app/media/
@@ -25,20 +32,22 @@ services:
       - ./.env
     depends_on:
       - db_homeaway
-  nginxhomeaway:
+      - redis_homeaway
+  nginx_homeaway:
     image: nginx:1.19.3
     ports:
       - "80:80"
     volumes:
       - ./nginx.conf:/etc/nginx/conf.d/default.conf
-      - ./frontend/.next/:/usr/share/nginx/html/
       - static_value_homeaway:/var/html/static/
       - media_value_homeaway:/var/html/media/
     depends_on:
-      - backend_homeaway
+      - frontend_homeaway
+      - backendhomeaway
 
 volumes:
   static_value_homeaway:
   media_value_homeaway:
   postgres_data_homeaway:
+  redis_storage_homeaway:
   

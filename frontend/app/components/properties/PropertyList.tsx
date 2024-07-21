@@ -7,6 +7,7 @@ import format from "date-fns/format";
 import PropertyListItem from "./PropertyListItem";
 import apiService from "@/app/services/apiService";
 import useSearchModal from "../hooks/useSearchModal";
+import { User } from "../hooks/useUser";
 
 export type PropertyType = {
     id: string;
@@ -14,6 +15,12 @@ export type PropertyType = {
     price_per_night: number;
     image: string;
     is_favorite: boolean;
+    name: string;
+    guests: number;
+    bedrooms: number;
+    bathrooms: number;
+    host: User;
+    description: string;
 };
 
 interface PropertyListProps {

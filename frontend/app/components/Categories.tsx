@@ -41,7 +41,7 @@ const Categories = () => {
         <div className="cursor-pointer pt-3 pb-6 flex flex-wrap items-center gap-x-12 gap-y-4">
             <div
                 onClick={() => _setCategory('')}
-                className={`pb-2 flex flex-col items-center space-y-2 border-b-2 ${categoryName === '' ? 'border-gray-800' : 'border-white'} opacity-60 hover:opacity-100 hover:border-gray-200`}
+                className={`pb-2 flex flex-col items-center space-y-2 border-b-2 ${categoryName === '' ? 'border-gray-800' : 'border-white hover:opacity-100 hover:border-gray-200'} opacity-60`}
             >
                 <Image 
                     src='/category_all.svg'
@@ -56,7 +56,7 @@ const Categories = () => {
                     <div
                         key={index} 
                         onClick={() => _setCategory(category.name)}
-                        className={`pb-2 flex flex-col items-center space-y-2 border-b-2 ${category.name == categoryName ? 'border-gray-800' : 'border-white'} opacity-60 hover:opacity-100 hover:border-gray-200`}
+                        className={`pb-2 flex flex-col items-center space-y-2 border-b-2 ${category.name == categoryName ? 'border-gray-800' : 'border-white hover:opacity-100 hover:border-gray-200'} opacity-60`}
                     >
                         <Image 
                             src={category.image}

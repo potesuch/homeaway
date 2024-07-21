@@ -38,7 +38,7 @@ const Categories: React.FC<CategoriesProps> = ({
                         <div
                             key={category.id}
                             onClick={() => setCategory(category.id)}
-                            className={`pb-2 flex flex-col items-center space-y-2 border-b-2 ${dataCategory == category.id ? 'border-gray-800' : 'border-white'} opacity-60 hover:opacity-100 hover:border-gray-200`}
+                            className={`pb-2 flex flex-col items-center space-y-2 border-b-2 ${dataCategory == category.id ? 'border-gray-800' : 'border-white hover:opacity-100 hover:border-gray-200'} opacity-60`}
                         >
                             <Image 
                                 src={category.image}
